@@ -26,8 +26,6 @@ namespace PDFBattleBoard.View
 
             currentPoint.X += (containingRectangle.Width / 3);
 
-            double circleSize = 6;
-
             for (int i = 0; i < ability.Charges; ++i)
             {
                 XPoint start = new XPoint(currentPoint.X + 2, currentPoint.Y + 2);
