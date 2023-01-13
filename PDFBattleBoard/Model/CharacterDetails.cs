@@ -23,7 +23,6 @@
         public PcRace CharacterRace { get; set; }
         public int Points { get; set; }
         public int ResChances { get; set; }
-
         public Armour CharacterArmour { get; set; }
     }
 }

@@ -7,9 +7,7 @@ namespace PDFBattleBoard.Utils
 
         public static Character BuildCharacter()
         {
-
             return DemoCharacter();
-
         }
 
         public static Character DemoCharacter()
@@ -25,17 +23,29 @@ namespace PDFBattleBoard.Utils
                     PlayerClass = PcClass.Scout,
                     CharacterArmour = new Armour()
                     {
-                        Physical = 10,
-                        PureMagic = 11,
-                        PurePower = 12,
-                        ArmouredDex = 13,
-                        UnarmouredDex = 14,
-                        Undead = 15,
-                        Evil = 16,
+                        Values = new List<AcValue>()
+                        {
+                            new AcValue { Name = "Physical", Value = 10 },
+                            new AcValue { Name = "Magic", Value = 11 },
+                            new AcValue { Name = "Power", Value = 12 },
+                            new AcValue { Name = "A Dex", Value = 13 },
+                            new AcValue { Name = "U Dex", Value = 14 },
+                            new AcValue { Name = "Undead", Value = 15 },
+                            new AcValue { Name = "Evil", Value = 16 },
+                            new AcValue { Name = "Psy", Value = 17 }
+                        }
                     }
                 },
                 PoolAbilites = new List<PoolAbility>()
                 {
+                    new PoolAbility()
+                    {
+                        Name = "Life",
+                        Total = 500,
+                        Talisman = 0,
+                        Self = 0,
+                        MedCharges = 2
+                    },
                     new PoolAbility() {
                         Name = "Power",
                         Total = 200,
@@ -49,14 +59,6 @@ namespace PDFBattleBoard.Utils
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
-                        MedCharges = 2
-                    },
-                    new PoolAbility()
-                    {
-                        Name = "LifePool",
-                        Total = 500,
-                        Talisman = 0,
-                        Self = 0,
                         MedCharges = 2
                     }
                 },

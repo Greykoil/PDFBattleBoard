@@ -68,7 +68,6 @@ namespace PDFBattleBoard.View
             }
 
             graphics.DrawRectangle(linePen, medCountRect);
-            //graphics.DrawString(ability.MedCharges.ToString(), font, XBrushes.Black, medCountRect, XStringFormats.Center);
 
             // Out
             currentPoint.X = containingRectangle.X;
