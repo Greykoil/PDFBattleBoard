@@ -21,14 +21,13 @@ namespace PDFBattleBoard
 
             //For drawing in PDF Page you will nedd XGraphics Object
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            ////For Test you will have to define font to be used
 
             var defaultCharacter = CharacterBuilder.BuildCharacter();
 
             CharacterDrawer.DrawCharacter(defaultCharacter, gfx, new XRect() { Height = page.Height, Width = page.Width });
 
             //Specify file name of the PDF file
-            string filename = "FirstPDFDocument.pdf";
+            string filename = $"{defaultCharacter.Details.Name}.pdf";
             //Save PDF File
             document.Save(filename);
 

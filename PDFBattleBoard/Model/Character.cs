@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PDFBattleBoard.Model
+﻿namespace PDFBattleBoard.Model
 {
     internal class Character
     {
@@ -12,6 +6,6 @@ namespace PDFBattleBoard.Model
         public CharacterDetails Details { get; set; }
         public List<ChargedAbility> ChargedAbilities { get; set; }
         public List<PoolAbility> PoolAbilites { get; set; }
-
+        public MagicDetails CharacterMagic { get; set; }
     }
 }

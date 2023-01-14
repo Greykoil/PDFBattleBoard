@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PDFBattleBoard.Model
+﻿namespace PDFBattleBoard.Model
 {
+    internal enum Source
+    {
+        Ability,
+        Item,
+        Store
+    }
+
     internal enum Frequency
     {
         Sectional,
         Daily,
-        PerEvent
+        PerEvent,
+        OnceEver
     }
 
     internal class ChargedAbility
@@ -18,5 +20,6 @@ namespace PDFBattleBoard.Model
         public string Name { get; set; }
         public int Charges { get; set; }
         public Frequency Frequent { get; set; }
+        public Source Source { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace PDFBattleBoard.View
             // Do something if the rectangle is too small. Otherwise we won't have space to work with
 
             double totalPoolWidth = containingRectangle.Width;
-            XFont font = new XFont("Verdana", 10, XFontStyle.Bold);
+            XFont headerFont = new XFont("Verdana", 10, XFontStyle.Bold);
+            XFont font = new XFont("Verdana", 10);
 
             #region BoxOutline
 
@@ -25,18 +26,20 @@ namespace PDFBattleBoard.View
             // Header outline
             var headerRectangle = new XRect() { Width = totalPoolWidth, Height = 10, Location = currentPoint };
             graphics.DrawRectangle(linePen, headerRectangle);
+            graphics.DrawString(ability.Name, headerFont, XBrushes.Black, headerRectangle, XStringFormats.Center);
+            currentPoint.Offset(0, 10);
+
 
             // Name
-            var nameRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10 , Location = currentPoint};
-            graphics.DrawRectangle(linePen, nameRect);
-            
-            graphics.DrawString(ability.Name, font, XBrushes.Black, nameRect, XStringFormats.Center);
+            var totalRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10 , Location = currentPoint};
+            graphics.DrawRectangle(linePen, totalRect);
+            graphics.DrawString("Total", font, XBrushes.Black, totalRect, XStringFormats.Center);
+            currentPoint.Offset(totalRect.Width, 0);
 
             // Total
-            currentPoint.X += containingRectangle.Width / 6;
-            var totalRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint};
-            graphics.DrawRectangle(linePen, nameRect);
-            graphics.DrawString(ability.Total.ToString(), font, XBrushes.Black, totalRect, XStringFormats.Center);
+            var totalValueRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint};
+            graphics.DrawRectangle(linePen, totalValueRect);
+            graphics.DrawString(ability.Total.ToString(), font, XBrushes.Black, totalValueRect, XStringFormats.Center);
 
             // Self/Talisman
             currentPoint.X += containingRectangle.Width / 6;
@@ -71,15 +74,15 @@ namespace PDFBattleBoard.View
 
             // Out
             currentPoint.X = containingRectangle.X;
-            currentPoint.Y = containingRectangle.Y + 10;
+            currentPoint.Y = containingRectangle.Y + 20;
             var outRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
             graphics.DrawRectangle(linePen, outRect);
             graphics.DrawString("Out", font, XBrushes.Black, outRect, XStringFormats.Center);
 
             currentPoint.Y += 10;
-            var emptyOutRect = new XRect() { Width = containingRectangle.Width / 6, Height = containingRectangle.Height  -20, Location = currentPoint };
+            var emptyOutRect = new XRect() { Width = containingRectangle.Width / 6, Height = 50, Location = currentPoint };
             graphics.DrawRectangle(linePen, emptyOutRect);
-            graphics.DrawString("75", font, XBrushes.Black, emptyOutRect, XStringFormats.TopCenter);
+            graphics.DrawString(ability.Out.ToString(), font, XBrushes.Black, emptyOutRect, XStringFormats.TopCenter);
 
             #endregion
 
@@ -89,16 +92,21 @@ namespace PDFBattleBoard.View
             var lineRectangle = new XRect
             {
                 Width = containingRectangle.Width - containingRectangle.Width / 6,
-                Height = containingRectangle.Height - 10,
+                Height = containingRectangle.Height - 20,
                 Location = currentPoint
             };
             linePen.Width = linePen.Width / 2;
-            graphics.DrawRectangle(linePen, lineRectangle);
+            //graphics.DrawRectangle(linePen, lineRectangle);
 
             for (int i = 0; i < lineRectangle.Height; i += 10)
             {
                 XPoint from = new XPoint() { X = lineRectangle.TopLeft.X, Y = lineRectangle.TopLeft.Y + i };
                 XPoint to = new XPoint() { X = lineRectangle.TopRight.X, Y = lineRectangle.TopLeft.Y + i };
+
+                if (i >= 60)
+                {
+                    from.X -= outRect.Width;
+                }
                 graphics.DrawLine(linePen, from, to);
             }
 

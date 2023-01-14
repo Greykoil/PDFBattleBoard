@@ -5,38 +5,91 @@ namespace PDFBattleBoard.View
 {
     internal class CharacterDrawer
     {
-        public static void DrawCharacter(Character character, XGraphics graphics, XRect containingRectangle)
+        public static void DrawCharacter(Character character, XGraphics graphics, XRect fullRectangle)
         {
+
+            var containingRectangle = new XRect()
+            {
+                Height = fullRectangle.Height - 20,
+                Width = fullRectangle.Width - 20,
+                Location = new XPoint() { X = fullRectangle.TopLeft.X + 10, Y = fullRectangle.TopLeft.Y + 10 }
+            };
+
             // The hard part here is going to be the division of the page, but for now lets do 
             // Character details across the top.
-            // Pool Details down the left
-            // Charged details down the right
-
+            //   Life    Pools
+            //   Magic   Abilities
             double totalPageHeight = containingRectangle.Height;
             double totalPageWidth = containingRectangle.Width;
 
-            XRect characterDetailsRect = new XRect() { Width = totalPageWidth, Height = 100 };
+            XRect characterDetailsRect = new XRect() { Width = totalPageWidth, Height = 100, Location = containingRectangle.TopLeft};
 
+            #region LeftSide
+
+            DetailsDrawer.DrawCharacterDetails(character.Details, graphics, characterDetailsRect);
+            
+            double leftSideSpace = totalPageHeight - characterDetailsRect.Height;
+
+            double magicAbilityHeight = 0;
+
+
+            if (character.CharacterMagic != null)
+            {
+                magicAbilityHeight = MagicDrawer.CalculateMagicHeight();
+            }
+
+            double lifeHeight = leftSideSpace - magicAbilityHeight;
+
+            XRect lifeRect = new XRect()
+            {
+                Width = totalPageWidth / 2,
+                Height = lifeHeight,
+                Location = new XPoint() { X = containingRectangle.Left, Y = containingRectangle.Top + characterDetailsRect.Height }
+            };
+            DrawPoolAbilities(character.PoolAbilites.Where(x => x.Name == "Life").ToList(), lifeRect, graphics);
+
+            XRect magicRect = new XRect()
+            {
+                Height = magicAbilityHeight,
+                Width = totalPageWidth / 2,
+                Location = new XPoint()
+                {
+                    X = containingRectangle.Left,
+                    Y = containingRectangle.Top + characterDetailsRect.Height + lifeRect.Height
+                }
+            };
+
+            if (character.CharacterMagic != null)
+            {
+                DrawMagicAbilities(character.CharacterMagic, magicRect, graphics);
+            }
+            #endregion
+
+            #region RightSide
+            double abilityHeight = ChargedAbilityDrawer.CalculateAbilityHeight(character.ChargedAbilities);
+            double rightSideSpace = totalPageHeight - (abilityHeight + 30);
+            
+            XRect poolRect = new XRect()
+            {
+                Height = rightSideSpace,
+                Width = totalPageWidth / 2,
+                Location = new XPoint() { X = containingRectangle.Left + totalPageWidth / 2, Y = 40}
+            };
+            DrawPoolAbilities(character.PoolAbilites.Where(x => x.Name != "Life").ToList(), poolRect, graphics);
 
             XRect chargedAbilitesRect = new XRect()
             {
                 Width = totalPageWidth / 2,
-                Height = totalPageHeight - characterDetailsRect.Height,
-                Location = new XPoint() { X = totalPageWidth / 2, Y = characterDetailsRect.Height }
+                Height = abilityHeight,
+                Location = new XPoint() { X = containingRectangle.Left + totalPageWidth / 2, Y = containingRectangle.Top + poolRect.Height + 30}
             };
-            
-            XRect poolAbilitesRect = new XRect() 
-            { 
-                Width = totalPageWidth / 2, 
-                Height = totalPageHeight - characterDetailsRect.Height,
-                Location = new XPoint() { X = 0, Y = characterDetailsRect.Height }
-            };
-
-            DetailsDrawer.DrawCharacterDetails(character.Details, graphics, characterDetailsRect);
-
-
             DrawChargedAbilites(character.ChargedAbilities, chargedAbilitesRect, graphics);
-            DrawPoolAbilities(character.PoolAbilites, poolAbilitesRect, graphics);
+            #endregion
+        }
+
+        private static void DrawMagicAbilities(MagicDetails characterMagic, XRect magicAbilitesRect, XGraphics graphics)
+        {
+            MagicDrawer.DrawMagic(characterMagic, graphics, magicAbilitesRect);
         }
 
         private static void DrawPoolAbilities(List<PoolAbility> poolAbilites, XRect poolAbilitesRect, XGraphics gfx)
@@ -60,13 +113,7 @@ namespace PDFBattleBoard.View
 
         private static void DrawChargedAbilites(List<ChargedAbility> chargedAbilities, XRect chargedAbilitesRect, XGraphics gfx)
         {
-            for (int i = 0; i < chargedAbilities.Count; ++i)
-            {
-                XPoint location = chargedAbilitesRect.TopLeft;
-                location.Y += i * 10;
-                XRect rect = new XRect() { Width = chargedAbilitesRect.Width, Height = 10, Location = location };
-                ChargedAbilityDrawer.DrawChargedAbility(chargedAbilities[i], gfx, rect);
-            }
+            ChargedAbilityDrawer.DrawChargedSkills(chargedAbilities, gfx, chargedAbilitesRect);
         }
     }
 }

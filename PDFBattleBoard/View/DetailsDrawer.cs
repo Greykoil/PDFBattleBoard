@@ -11,7 +11,6 @@ namespace PDFBattleBoard.View
             DrawName(characterDetails, graphics, containingRectangle.Width, ref currentPt);
             DrawMiscInfoRect(characterDetails, ref currentPt, containingRectangle.Width, graphics);
             DrawAcInfo(characterDetails, ref currentPt, containingRectangle.Width / 2, containingRectangle.Height, graphics);
-            DrawNotes(ref currentPt, containingRectangle.Width / 2, containingRectangle.Height - 30, graphics);
         }
 
         private static void DrawName(CharacterDetails characterDetails, XGraphics graphics, double width, ref XPoint currentPt)
@@ -54,7 +53,7 @@ namespace PDFBattleBoard.View
                 graphics.DrawRectangle(linePen, acNameRect);
                 graphics.DrawString(acValue.Name, font, XBrushes.Black, acNameRect, XStringFormats.Center);
                 currentPt.Offset(0, 10);
-                var acValueRect = new XRect { Width = width / 8, Height = 10, Location = currentPt };
+                var acValueRect = new XRect { Width = width / characterDetails.CharacterArmour.Values.Count, Height = 10, Location = currentPt };
                 graphics.DrawRectangle(linePen, acValueRect);
                 graphics.DrawString(acValue.Value.ToString(), font, XBrushes.Black, acValueRect, XStringFormats.Center);
                 currentPt.Offset(width / characterDetails.CharacterArmour.Values.Count, -10);
