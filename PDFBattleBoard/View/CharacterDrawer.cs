@@ -107,6 +107,8 @@ namespace PDFBattleBoard.View
                     Location = location
                 };
 
+                var UtilDrawer = new UtilDrawer(gfx);
+                var PoolDrawer = new PoolDrawer(UtilDrawer);
                 PoolDrawer.DrawPool(poolAbilites[i], gfx, rect);
             }
         }

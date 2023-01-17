@@ -7,7 +7,7 @@ namespace PDFBattleBoard.Utils
 
         public static Character BuildCharacter()
         {
-            return Khandis();
+            return DemoCharacter();
         }
 
         public static Character DemoCharacter()
@@ -44,14 +44,17 @@ namespace PDFBattleBoard.Utils
                         Total = 500,
                         Talisman = 0,
                         Self = 0,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = false
                     },
                     new PoolAbility() {
                         Name = "Power",
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = true,
+                        Out = 75
                     },
                     new PoolAbility()
                     {
@@ -59,7 +62,8 @@ namespace PDFBattleBoard.Utils
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = false
                     }
                 },
                 ChargedAbilities = new List<ChargedAbility>()
