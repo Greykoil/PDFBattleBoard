@@ -7,7 +7,7 @@ namespace PDFBattleBoard.Utils
 
         public static Character BuildCharacter()
         {
-            return DemoCharacter();
+            return Khandis();
         }
 
         public static Character DemoCharacter()
@@ -75,6 +75,13 @@ namespace PDFBattleBoard.Utils
                         Frequent = Frequency.Daily,
                         Source = Source.Ability
                     },
+                    new ChargedAbility()
+                    {
+                        Name = "Resist Dismember",
+                        Charges = 2,
+                        Frequent = Frequency.Sectional,
+                        Source = Source.Ability
+                    },
                      new ChargedAbility()       {
                         Name = "Resist Disarm",
                         Charges = 4,
@@ -82,7 +89,7 @@ namespace PDFBattleBoard.Utils
                         Source = Source.Ability
                     },
                     new ChargedAbility()  {
-                        Name = "Resist Dismember",
+                        Name = "Resist Bonebrake",
                         Charges = 3,
                         Frequent = Frequency.PerEvent,
                         Source = Source.Ability
@@ -116,6 +123,20 @@ namespace PDFBattleBoard.Utils
                     {
                         Name = "Heal",
                         Charges = 1,
+                        Frequent = Frequency.OnceEver,
+                        Source = Source.Item
+                    },
+                    new ChargedAbility()
+                    {
+                        Name = "Banish Bastard",
+                        Charges = 5,
+                        Frequent = Frequency.OnceEver,
+                        Source = Source.Item
+                    },
+                    new ChargedAbility()
+                    {
+                        Name = "Control Fish",
+                        Charges = 5,
                         Frequent = Frequency.OnceEver,
                         Source = Source.Item
                     }

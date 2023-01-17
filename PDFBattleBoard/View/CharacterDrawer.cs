@@ -35,7 +35,9 @@ namespace PDFBattleBoard.View
 
             if (character.CharacterMagic != null)
             {
-                magicAbilityHeight = MagicDrawer.CalculateMagicHeight();
+                var UtilDrawer = new UtilDrawer(graphics);
+                var magic = new MagicDrawer(UtilDrawer);
+                magicAbilityHeight = magic.CalculateMagicHeight();
             }
 
             double lifeHeight = leftSideSpace - magicAbilityHeight;
@@ -66,12 +68,20 @@ namespace PDFBattleBoard.View
             #endregion
 
             #region RightSide
-            double abilityHeight = ChargedAbilityDrawer.CalculateAbilityHeight(character.ChargedAbilities);
-            double rightSideSpace = totalPageHeight - (abilityHeight + 30);
+            var drawer = new UtilDrawer(graphics);
+            var foo = new ChargedAbilityDrawer(drawer);
             
+            var abilityHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Ability));
+
+            var itemHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Item));
+
+            var storeHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Store));
+
+            double rightSidePoolSpace = totalPageHeight - abilityHeight - itemHeight - storeHeight - 30;
+
             XRect poolRect = new XRect()
             {
-                Height = rightSideSpace,
+                Height = rightSidePoolSpace,
                 Width = totalPageWidth / 2,
                 Location = new XPoint() { X = containingRectangle.Left + totalPageWidth / 2, Y = 40}
             };
@@ -81,15 +91,36 @@ namespace PDFBattleBoard.View
             {
                 Width = totalPageWidth / 2,
                 Height = abilityHeight,
-                Location = new XPoint() { X = containingRectangle.Left + totalPageWidth / 2, Y = containingRectangle.Top + poolRect.Height + 30}
+                Location = poolRect.BottomLeft
             };
-            DrawChargedAbilites(character.ChargedAbilities, chargedAbilitesRect, graphics);
+            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Ability), chargedAbilitesRect, graphics);
+
+            XRect ItemAbilitesRect = new XRect()
+            {
+                Width = totalPageWidth / 2,
+                Height = itemHeight,
+                Location = chargedAbilitesRect.BottomLeft
+            };
+            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Item), ItemAbilitesRect, graphics);
+
+            XRect storesAbilityRect = new XRect()
+            {
+                Width = totalPageWidth / 2,
+                Height = storeHeight,
+                Location = ItemAbilitesRect.BottomLeft
+            };
+
+            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Store), storesAbilityRect, graphics);
+
+
             #endregion
         }
 
         private static void DrawMagicAbilities(MagicDetails characterMagic, XRect magicAbilitesRect, XGraphics graphics)
         {
-            MagicDrawer.DrawMagic(characterMagic, graphics, magicAbilitesRect);
+            var UtilDrawer = new UtilDrawer(graphics);
+            var magic = new MagicDrawer(UtilDrawer);
+            magic.DrawMagic(characterMagic, graphics, magicAbilitesRect);
         }
 
         private static void DrawPoolAbilities(List<PoolAbility> poolAbilites, XRect poolAbilitesRect, XGraphics gfx)
@@ -113,9 +144,11 @@ namespace PDFBattleBoard.View
             }
         }
 
-        private static void DrawChargedAbilites(List<ChargedAbility> chargedAbilities, XRect chargedAbilitesRect, XGraphics gfx)
+        private static void DrawChargedAbilites(IEnumerable<ChargedAbility> chargedAbilities, XRect chargedAbilitesRect, XGraphics gfx)
         {
-            ChargedAbilityDrawer.DrawChargedSkills(chargedAbilities, gfx, chargedAbilitesRect);
+            var drawer = new UtilDrawer(gfx);
+            var foo = new ChargedAbilityDrawer(drawer);
+            foo.DrawChargedSkills(chargedAbilities, gfx, chargedAbilitesRect);
         }
     }
 }

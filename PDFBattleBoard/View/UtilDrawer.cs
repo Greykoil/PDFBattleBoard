@@ -5,11 +5,12 @@ namespace PDFBattleBoard.View
     internal class UtilDrawer
     {
 
-        public double DefaultLineHeight { get; } = 12;
+        public double DefaultLineHeight { get; } = 14;
+
+        public double RegionBuffer { get; } = 2;
 
         XFont HeaderFont = new XFont("Verdana", 10, XFontStyle.Bold);
         XFont TextFont = new XFont("Verdana", 10);
-        XBrush DefaultBrush = XBrushes.Black;
         XPen DefaultPen = new XPen(XBrushes.Black);
         XPen ThinPen = new XPen(XBrushes.Black, 0.5);
 
@@ -78,7 +79,7 @@ namespace PDFBattleBoard.View
 
         internal void FilLRegionWithLines(XRect lineRegion)
         {
-            for (double i = 0; i < lineRegion.Height; i += DefaultLineHeight)
+            for (double i = 0; i <= lineRegion.Height; i += DefaultLineHeight)
             {
                 XPoint from = new XPoint() { X = lineRegion.TopLeft.X, Y = lineRegion.TopLeft.Y + i };
                 XPoint to = new XPoint() { X = lineRegion.TopRight.X, Y = lineRegion.TopLeft.Y + i };
@@ -93,7 +94,7 @@ namespace PDFBattleBoard.View
         /// </summary>
         /// <param name="outerLimit"></param>
         /// <returns></returns>
-        public XRect DrawRegionOutline(XRect outerLimit)
+        private XRect DrawRegionOutline(XRect outerLimit)
         {
             double buffer = 2;
 
