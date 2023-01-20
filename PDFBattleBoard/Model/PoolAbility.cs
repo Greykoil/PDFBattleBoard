@@ -8,5 +8,6 @@
         public int Self { get; set; }
         public int Talisman { get; set; }
         public int MedCharges { get; set; }
+        public bool HasOut { get; set; }
     }
 }

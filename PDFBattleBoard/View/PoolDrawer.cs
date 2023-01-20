@@ -5,113 +5,92 @@ namespace PDFBattleBoard.View
 {
     internal class PoolDrawer
     {
-        public static void DrawPool(PoolAbility ability, XGraphics graphics, XRect containingRectangle)
+        public UtilDrawer DrawingUtils { get; }
+
+        public PoolDrawer(UtilDrawer utilDrawer)
+        {
+            DrawingUtils = utilDrawer;
+        }
+
+
+        public void DrawPool(PoolAbility ability, XRect containingRectangle)
         {
             // Do something if the rectangle is too small. Otherwise we won't have space to work with
+            var innerRegion = DrawingUtils.CreateRegion(containingRectangle, ability.Name);
 
-            double totalPoolWidth = containingRectangle.Width;
-            XFont headerFont = new XFont("Verdana", 10, XFontStyle.Bold);
-            XFont font = new XFont("Verdana", 10);
+            var currentPoint = innerRegion.TopLeft;
 
-            #region BoxOutline
-
-            XPen linePen = new XPen(XBrushes.Black);
-
-            graphics.DrawRectangle(linePen, containingRectangle);
-
-            #endregion
-
-            #region Header
-            XPoint currentPoint = containingRectangle.TopLeft;
-            // Header outline
-            var headerRectangle = new XRect() { Width = totalPoolWidth, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, headerRectangle);
-            graphics.DrawString(ability.Name, headerFont, XBrushes.Black, headerRectangle, XStringFormats.Center);
-            currentPoint.Offset(0, 10);
-
-
+            var boxWidth = innerRegion.Width / 6;
             // Name
-            var totalRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10 , Location = currentPoint};
-            graphics.DrawRectangle(linePen, totalRect);
-            graphics.DrawString("Total", font, XBrushes.Black, totalRect, XStringFormats.Center);
-            currentPoint.Offset(totalRect.Width, 0);
+            DrawingUtils.TextRectangle("Total", boxWidth, currentPoint);
+            currentPoint.Offset(boxWidth, 0);
 
-            // Total
-            var totalValueRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint};
-            graphics.DrawRectangle(linePen, totalValueRect);
-            graphics.DrawString(ability.Total.ToString(), font, XBrushes.Black, totalValueRect, XStringFormats.Center);
+            DrawingUtils.TextRectangle(ability.Total.ToString(), boxWidth, currentPoint);
+            currentPoint.Offset(boxWidth, 0);
 
-            // Self/Talisman
-            currentPoint.X += containingRectangle.Width / 6;
-            var SelfTaliRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, SelfTaliRect);
-            graphics.DrawString("Self/Tali", font, XBrushes.Black, SelfTaliRect, XStringFormats.Center);
+            DrawingUtils.TextRectangle("Self/Tali", boxWidth, currentPoint);
+            currentPoint.Offset(boxWidth, 0);
 
-            currentPoint.X += containingRectangle.Width / 6;
-            var fooRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, fooRect);
-            graphics.DrawString("10/190", font, XBrushes.Black, fooRect, XStringFormats.Center);
+            DrawingUtils.TextRectangle(ability.Self.ToString() + "/" + ability.Talisman.ToString(), boxWidth, currentPoint);
+            currentPoint.Offset(boxWidth, 0);
 
-            // Meds
-            currentPoint.X += containingRectangle.Width / 6;
-            var medsRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, medsRect);
-            graphics.DrawString("Meditate", font, XBrushes.Black, medsRect, XStringFormats.Center);
+            DrawingUtils.TextRectangle("Meditate", boxWidth, currentPoint);
+            currentPoint.Offset(boxWidth, 0);
+
+            DrawingUtils.CheckCircleRectangle(ability.MedCharges, boxWidth, currentPoint);
 
 
-            currentPoint.X += containingRectangle.Width / 6;
-            var medCountRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
-            for (int i = 0; i < ability.MedCharges; ++i)
+            // Reset current point to what is now the top left of the remaining space
+            currentPoint = new XPoint()
             {
-                XPoint start = new XPoint(currentPoint.X + 2, currentPoint.Y + 2);
-                XPoint end = new XPoint(start.X + 6, start.Y + 6);
-                XRect containingBox = new XRect(start, end);
-                graphics.DrawEllipse(linePen, containingBox);
-                currentPoint.X += 10;
-            }
-
-            graphics.DrawRectangle(linePen, medCountRect);
-
-            // Out
-            currentPoint.X = containingRectangle.X;
-            currentPoint.Y = containingRectangle.Y + 20;
-            var outRect = new XRect() { Width = containingRectangle.Width / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, outRect);
-            graphics.DrawString("Out", font, XBrushes.Black, outRect, XStringFormats.Center);
-
-            currentPoint.Y += 10;
-            var emptyOutRect = new XRect() { Width = containingRectangle.Width / 6, Height = 50, Location = currentPoint };
-            graphics.DrawRectangle(linePen, emptyOutRect);
-            graphics.DrawString(ability.Out.ToString(), font, XBrushes.Black, emptyOutRect, XStringFormats.TopCenter);
-
-            #endregion
-
-            #region Lines
-            currentPoint.X += containingRectangle.Width / 6;
-            currentPoint.Y -= 10;
-            var lineRectangle = new XRect
-            {
-                Width = containingRectangle.Width - containingRectangle.Width / 6,
-                Height = containingRectangle.Height - 20,
-                Location = currentPoint
+                X = innerRegion.Left,
+                Y = innerRegion.Top + DrawingUtils.DefaultLineHeight
             };
-            linePen.Width = linePen.Width / 2;
-            //graphics.DrawRectangle(linePen, lineRectangle);
 
-            for (int i = 0; i < lineRectangle.Height; i += 10)
+            if (ability.HasOut)
             {
-                XPoint from = new XPoint() { X = lineRectangle.TopLeft.X, Y = lineRectangle.TopLeft.Y + i };
-                XPoint to = new XPoint() { X = lineRectangle.TopRight.X, Y = lineRectangle.TopLeft.Y + i };
+                double outWidth = innerRegion.Width / 6;
+                double outHeight = 4 * DrawingUtils.DefaultLineHeight;
+                DrawingUtils.TextRectangle("Out", outWidth, currentPoint);
+                currentPoint.Offset(0, DrawingUtils.DefaultLineHeight);
+                var emptyOutRect = new XRect() { Width = outWidth, Height = outHeight, Location = currentPoint };
+                DrawingUtils.TextRectangle(ability.Out.ToString(), emptyOutRect, XStringFormats.TopCenter);
 
-                if (i >= 60)
+                var rightBox = new XRect()
                 {
-                    from.X -= outRect.Width;
-                }
-                graphics.DrawLine(linePen, from, to);
+                    Width = innerRegion.Width - outWidth,
+                    Height = outHeight + DrawingUtils.DefaultLineHeight,
+                    Location = new XPoint()
+                    {
+                        X = currentPoint.X + outWidth,
+                        Y = currentPoint.Y
+                    }
+                };
+                DrawingUtils.FilLRegionWithLines(rightBox);
+                
+                var bottomBox = new XRect()
+                {
+                    Width = innerRegion.Width,
+                    Height = innerRegion.Height - (outHeight +  2 * DrawingUtils.DefaultLineHeight),
+                    Location = new XPoint()
+                    {
+                        X = currentPoint.X,
+                        Y = currentPoint.Y + outHeight
+                    }
+                };
+                DrawingUtils.FilLRegionWithLines(bottomBox);
             }
 
-            #endregion
+            else
+            {
+                var lineRegion = new XRect() {
+                    Width = innerRegion.Width, 
+                    Height = innerRegion.Height - DrawingUtils.DefaultLineHeight,
+                    Location = currentPoint
+                };
 
+                DrawingUtils.FilLRegionWithLines(lineRegion);
+            }
         }
     }
 }

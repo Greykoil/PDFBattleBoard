@@ -6,176 +6,94 @@ namespace PDFBattleBoard.View
     internal class ChargedAbilityDrawer
     {
 
-        public static double CalculateAbilityHeight(List<ChargedAbility> abilities)
+        public UtilDrawer DrawingUtils { get; }
+
+        public ChargedAbilityDrawer(UtilDrawer utils)
         {
-            var currentPoint = new XPoint(0, 0);
-            int count = 0;
-            foreach (var type in (Source[])Enum.GetValues(typeof(Source)))
-            {
-                var relevantTypeAbilies = abilities.Where(x => x.Source == type);
-                if (!relevantTypeAbilies.Any())
-                {
-                    continue;
-                }
-                count += 10;
-
-                foreach (var fre in (Frequency[])Enum.GetValues(typeof(Frequency)))
-                {
-                    var relevantFreAbilies = relevantTypeAbilies.Where(x => x.Frequent == fre);
-                    if (!relevantFreAbilies.Any())
-                    {
-                        continue;
-                    }
-                    count += 10;
-
-                    var singleLines = relevantFreAbilies.Where(x => x.Frequent == Frequency.Sectional || x.Charges > 5);
-
-                    foreach (var thing in singleLines)
-                    {
-                        count += 10;
-                    }
-
-                    var doubledLines = relevantFreAbilies.Where(x => !singleLines.Contains(x));
-                    bool halfOffset = false;
-                    foreach (var current in doubledLines)
-                    {
-                        if (!halfOffset)
-                        {
-                            halfOffset = true;
-                        }
-                        else
-                        {
-                            count += 10;
-                            halfOffset = false;
-                        }
-                    }
-
-                    if (halfOffset)
-                    {
-                        count += 10;
-                    }
-                }
-            }
-
-            return count;
+            DrawingUtils = utils;
         }
 
-        public static void DrawChargedSkills(List<ChargedAbility> abilities, XGraphics graphics, XRect xRect)
+        public double CalculateAbilityHeight(IEnumerable<ChargedAbility> abilities)
         {
-            var currentPoint = xRect.TopLeft;
-            double width = xRect.Width;
-            XFont headerFont = new XFont("Verdana", 10, XFontStyle.Bold);
-            XFont midFont = new XFont("Verdana", 10);
-            XPen linePen = new XPen(XBrushes.Black);
-            graphics.DrawRectangle(linePen, xRect);
 
-            foreach (var type in (Source[]) Enum.GetValues(typeof(Source)))
-            {
-                var relevantTypeAbilies = abilities.Where(x => x.Source == type);
-                if (!relevantTypeAbilies.Any())
-                {
-                    continue;
-                }
-                var headerRect = new XRect() { Width = width, Height = 10, Location = currentPoint };
-                graphics.DrawRectangle(linePen, headerRect);
-                graphics.DrawString(type.ToString(), headerFont, XBrushes.Black, headerRect, XStringFormats.Center);
-                currentPoint.Offset(0, 10);
+            var singleLineAbilites = abilities.Where(x => x.Charges > 7 || x.Frequent == Frequency.Sectional && x.Charges > 2);
 
-                foreach (var fre in (Frequency[]) Enum.GetValues(typeof(Frequency)))
-                {
-                    var relevantFreAbilies = relevantTypeAbilies.Where(x => x.Frequent == fre);
-                    if (!relevantFreAbilies.Any())
-                    {
-                        continue;
-                    }
-                    var freRect = new XRect() { Width = width, Height = 10, Location = currentPoint };
-                    graphics.DrawRectangle(linePen, freRect);
-                    graphics.DrawString(fre.ToString(), midFont, XBrushes.Black, freRect, XStringFormats.Center);
-                    currentPoint.Offset(0, 10);
+            var doubledUpAbilites = abilities.Where(x => !singleLineAbilites.Contains(x));
 
-                    DrawAbilites(relevantFreAbilies, graphics, ref currentPoint, xRect.Width);
-                }
-            }
+
+            return
+                DrawingUtils.RegionBuffer * 2 + // The buffer above and below the box
+                DrawingUtils.DefaultLineHeight + // The header line
+                (singleLineAbilites.Count() * DrawingUtils.DefaultLineHeight) + // One line per single line ability
+                Math.Ceiling((double)doubledUpAbilites.Count() / 2) * DrawingUtils.DefaultLineHeight; // One line for every 2 doubled up abilites
         }
 
-        private static void DrawAbilites(IEnumerable<ChargedAbility> relevantFreAbilies, XGraphics graphics, ref XPoint currentPoint, double width)
+        public void DrawChargedSkills(IEnumerable<ChargedAbility> abilities, XRect xRect)
         {
-            var singleLines = relevantFreAbilies.Where(x => x.Frequent == Frequency.Sectional || x.Charges > 5);
+            var innerRegion = DrawingUtils.CreateRegion(xRect, abilities.First().Source.ToString());
 
-            foreach (var fre in singleLines)
+            var singleLineAbilites = abilities.Where(x => x.Charges > 7 || x.Frequent == Frequency.Sectional && x.Charges > 3);
+
+            var doubledUpAbilites = abilities.Where(x => !singleLineAbilites.Contains(x));
+
+            var totalWidth = innerRegion.Width;
+            var currentPoint = innerRegion.TopLeft;
+            foreach (var item in singleLineAbilites)
             {
-                XRect rect = new XRect() { Width = width, Height = 10, Location = currentPoint };
-                DrawChargedAbility(fre, graphics, rect);
-                currentPoint.Offset(0, 10);
-            }
-
-            var doubledLines = relevantFreAbilies.Where(x => !singleLines.Contains(x));
-            bool halfOffset = false;
-
-            foreach (var current in doubledLines)
-            {
-                XRect rect = new XRect() { Width = width / 2, Height = 10, Location = currentPoint };
-                DrawChargedAbility(current, graphics, rect);
-                if (!halfOffset)
+                var nameWidth = totalWidth / 4;
+                DrawingUtils.TextRectangle(item.Name, nameWidth, currentPoint);
+                currentPoint.Offset(nameWidth, 0);
+                var chargesWidth = totalWidth - nameWidth;
+                if (item.Frequent == Frequency.Sectional)
                 {
-                    currentPoint.Offset(width / 2, 0);
-                    halfOffset = true;
+                    chargesWidth = chargesWidth / 3;
+                    for (int i = 0; i < 3; ++i)
+                    {
+                        DrawingUtils.CheckCircleRectangle(item.Charges, chargesWidth, currentPoint);
+                        currentPoint.Offset(chargesWidth, 0);
+                    }
                 }
                 else
                 {
-                    currentPoint.Offset(-width / 2, 10);
-                    halfOffset = false;
+                    DrawingUtils.CheckCircleRectangle(item.Charges, chargesWidth, currentPoint);
                 }
+
+                currentPoint.X = innerRegion.Left;
+                currentPoint.Offset(0, DrawingUtils.DefaultLineHeight);
             }
 
-            if (halfOffset)
+            var halfWidth = totalWidth / 2;
+            bool halfOffset = false;
+            foreach (var item in doubledUpAbilites)
             {
-                currentPoint.Offset(-width / 2, 10); 
-            }
-        }
-
-        public static void DrawChargedAbility(ChargedAbility ability, XGraphics graphics, XRect containingRectangle)
-        {
-            XPen linePen = new XPen(XBrushes.Black);
-
-            XFont font = new XFont("Verdana", 8);
-
-            graphics.DrawRectangle(linePen, containingRectangle);
-            var currentPoint = containingRectangle.TopLeft;
-            
-            // Name
-            var nameRect = new XRect() { Width = containingRectangle.Width / 2.5, Height = containingRectangle.Height, Location = currentPoint};
-            graphics.DrawRectangle(linePen, nameRect);
-
-            graphics.DrawString(ability.Name, font, XBrushes.Black, nameRect, XStringFormats.Center);
-
-            currentPoint.X += (containingRectangle.Width / 2.5);
-
-            for (int i = 0; i < ability.Charges; ++i)
-            {
-                XPoint start = new XPoint(currentPoint.X + 2, currentPoint.Y + 2);
-                XPoint end = new XPoint(start.X + 6, start.Y + 6);
-                XRect containingBox = new XRect(start, end);
-                graphics.DrawEllipse(linePen, containingBox);
-                currentPoint.X += 10;
-            }
-
-            if (ability.Frequent == Frequency.Sectional)
-            {
-                for (int i = 0; i < 2; ++i)
+                var nameWidth = totalWidth / 4;
+                DrawingUtils.TextRectangle(item.Name, nameWidth, currentPoint);
+                currentPoint.Offset(nameWidth, 0);
+                var chargesWidth = halfWidth - nameWidth;
+                if (item.Frequent == Frequency.Sectional)
                 {
-                    XPoint from = new XPoint() { X = currentPoint.X, Y = currentPoint.Y + 10 };
-                    XPoint to = new XPoint() { X = currentPoint.X + 5, Y = currentPoint.Y };
-                    graphics.DrawLine(linePen, from, to);
-                    currentPoint.X += 5;
-                    for (int j = 0; j < ability.Charges; ++j)
+                    chargesWidth = chargesWidth / 3;
+                    for (int i = 0; i < 3; ++i)
                     {
-                        XPoint start = new XPoint(currentPoint.X + 2, currentPoint.Y + 2);
-                        XPoint end = new XPoint(start.X + 6, start.Y + 6);
-                        XRect containingBox = new XRect(start, end);
-                        graphics.DrawEllipse(linePen, containingBox);
-                        currentPoint.X += 10;
+                        DrawingUtils.CheckCircleRectangle(item.Charges, chargesWidth, currentPoint);
+                        currentPoint.Offset(chargesWidth, 0);
                     }
+                }
+                else
+                {
+                    DrawingUtils.CheckCircleRectangle(item.Charges, chargesWidth, currentPoint);
+                }
+
+                if (halfOffset)
+                {
+                    halfOffset = false;
+                    currentPoint.X = innerRegion.Left;
+                    currentPoint.Offset(0, DrawingUtils.DefaultLineHeight);
+                }
+                else
+                {
+                    halfOffset=true;
+                    currentPoint.X = innerRegion.Left + halfWidth;
                 }
             }
         }

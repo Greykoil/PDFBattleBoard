@@ -5,156 +5,155 @@ namespace PDFBattleBoard.View
 {
     internal class MagicDrawer
     {
-        public static int CalculateMagicHeight()
+        public UtilDrawer DrawingUtils { get; }
+
+        public MagicDrawer(UtilDrawer utils)
         {
-            return 20 + 50 + 30 + 30 + 10;
+            DrawingUtils = utils;
         }
 
-        public static void DrawMagic(MagicDetails characterDetails, XGraphics graphics, XRect containingRectangle)
+        public double CalculateMagicHeight()
         {
-            DrawHeader(characterDetails, graphics, containingRectangle);
-            var currentPoint = containingRectangle.TopLeft;
-            currentPoint.Offset(0, 20);
+            return 13 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
+        }
+
+        public void DrawMagic(MagicDetails characterDetails, XRect containingRectangle)
+        {
+            var innerRegion = DrawingUtils.CreateRegion(containingRectangle, "Magic");
+
+            double magicWidth = innerRegion.Width;
+
+            var currentPoint = innerRegion.TopLeft;
+
+            var columnHeaderWidth = magicWidth / 15;
+            DrawingUtils.TextRectangle("Lvl", columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle("Total", columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle("Out", columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            var remainingWidth = magicWidth - 3 * columnHeaderWidth;
+
+            var infoWidth = remainingWidth / 6;
+            DrawingUtils.TextRectangle("Total", infoWidth, currentPoint);
+            currentPoint.Offset(infoWidth, 0);
+
+            int totalMana = CalculateTotalMana(characterDetails);
+            DrawingUtils.TextRectangle(totalMana.ToString(), infoWidth, currentPoint);
+            currentPoint.Offset(infoWidth, 0);
+
+            DrawingUtils.TextRectangle("Mnemonic", infoWidth, currentPoint);
+            currentPoint.Offset(infoWidth, 0);
+
+            DrawingUtils.CheckCircleRectangle(characterDetails.Mnemonics, infoWidth, currentPoint);
+            currentPoint.Offset(infoWidth, 0);
+
+            DrawingUtils.TextRectangle("Regain", infoWidth, currentPoint);
+            currentPoint.Offset(infoWidth, 0);
+
+            DrawingUtils.TextRectangle(characterDetails.Regain.ToString(), infoWidth, currentPoint);
+
+            currentPoint = innerRegion.TopLeft;
+            currentPoint.Offset(0, DrawingUtils.DefaultLineHeight);
+
             for (int i = 1; i <= 5; ++i)
             {
-                var containingRect = new XRect() { Width = containingRectangle.Width, Height = 10, Location = currentPoint };
-                DrawLevel(characterDetails.SpellSlots.First(x => x.Level == i), containingRect, graphics);
-                currentPoint.Offset(0, 10);
+                var currentLevelSlots = characterDetails.SpellSlots[(i - 1)];
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Level.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Total.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Out.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                currentPoint.Offset(-3 * columnHeaderWidth, DrawingUtils.DefaultLineHeight);
             }
-            
-            XPen linePen = new XPen(XBrushes.Black);
-            // Couple of blank lines for extra level 5s.
-            for (int i = 0; i < 30; i += 10)
+
+            var rightLineRegion = new XRect()
             {
-                XPoint from = new XPoint() { X = currentPoint.X, Y = currentPoint.Y + i };
-                XPoint to = new XPoint() { X = currentPoint.X + containingRectangle.Width, Y = currentPoint.Y + i };
-                graphics.DrawLine(linePen, from, to);
-            }
-            currentPoint.Offset(0, 30);
+                Width = innerRegion.Width - 3 * columnHeaderWidth,
+                Height = 5 * DrawingUtils.DefaultLineHeight,
+                Location = new XPoint()
+                {
+                    X = innerRegion.Left + 3 * columnHeaderWidth,
+                    Y = innerRegion.Top + DrawingUtils.DefaultLineHeight
+                }
+            };
+
+            DrawingUtils.FilLRegionWithLines(rightLineRegion);
+
+            var levelFiveLines = new XRect()
+            {
+                Width = innerRegion.Width,
+                Height = 2 * DrawingUtils.DefaultLineHeight,
+                Location = new XPoint()
+                {
+                    X = innerRegion.Left,
+                    Y = innerRegion.Top + 6 * DrawingUtils.DefaultLineHeight
+                }
+            };
+
+            DrawingUtils.FilLRegionWithLines(levelFiveLines);
+
+            currentPoint = levelFiveLines.BottomLeft;
 
             for (int i = 6; i <= 8; ++i)
             {
-                var containingRect = new XRect() { Width = containingRectangle.Width, Height = 10, Location = currentPoint };
-                DrawLevel(characterDetails.SpellSlots.First(x => x.Level == i), containingRect, graphics);
-                currentPoint.Offset(0, 10);
+                var currentLevelSlots = characterDetails.SpellSlots[(i - 1)];
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Level.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Total.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                DrawingUtils.TextRectangle(currentLevelSlots.Out.ToString(), columnHeaderWidth, currentPoint);
+                currentPoint.Offset(columnHeaderWidth, 0);
+
+                currentPoint.Offset(-3 * columnHeaderWidth, DrawingUtils.DefaultLineHeight);
             }
-            
-            var nineRect = new XRect() { Width = containingRectangle.Width / 2, Height = 10, Location = currentPoint };
-            DrawLevel(characterDetails.SpellSlots.First(x => x.Level == 9), nineRect, graphics);
-            currentPoint.Offset(nineRect.Width, 0);
-            
-            var tenRect = new XRect() { Width = containingRectangle.Width / 2, Height = 10, Location = currentPoint };
-            DrawLevel(characterDetails.SpellSlots.First(x => x.Level == 10), tenRect , graphics);
-            currentPoint.Offset(nineRect.Width, 0);
 
-        }
-
-        private static void DrawLevel(SpellSlots spellSlots, XRect containingRectangle, XGraphics graphics)
-        {
-            double width = containingRectangle.Width;
-            var headerRect = new XRect() { Width = width, Height = 10, Location = containingRectangle.TopLeft };
-            XFont font = new XFont("Verdana", 9);//, XFontStyle.Bold);
-            XPen linePen = new XPen(XBrushes.Black);
-            graphics.DrawRectangle(linePen, headerRect);
-            
-            var currentPoint = containingRectangle.TopLeft;
-
-            var levelRect = new XRect() { Height = 10, Width = 20, Location = currentPoint};
-            graphics.DrawRectangle(linePen, levelRect);
-            graphics.DrawString(spellSlots.Level.ToString(), font, XBrushes.Black, levelRect, XStringFormats.Center);
-            currentPoint.Offset(levelRect.Width, 0);
-
-            var numberRect = new XRect() { Height = 10, Width = 25, Location = currentPoint};
-            graphics.DrawRectangle(linePen, numberRect);
-            graphics.DrawString(spellSlots.Total.ToString(), font, XBrushes.Black, numberRect, XStringFormats.Center);
-            currentPoint.Offset(numberRect.Width, 0);
-
-            var outRect = new XRect() { Height = 10, Width = 20, Location = currentPoint };
-            graphics.DrawRectangle(linePen, outRect);
-            graphics.DrawString(spellSlots.Out.ToString(), font, XBrushes.Black, outRect, XStringFormats.Center);
-        }
-
-        private static void DrawHeader(MagicDetails characterDetails, XGraphics graphics, XRect containingRectangle)
-        {
-            XPoint currentPoint = containingRectangle.TopLeft;
-
-            double width = containingRectangle.Width;
-            var headerRect = new XRect() { Width = width, Height = 10, Location = currentPoint };
-            XFont headerFont = new XFont("Verdana", 10, XFontStyle.Bold);
-            XPen linePen = new XPen(XBrushes.Black);
-            graphics.DrawRectangle(linePen, containingRectangle);
-            graphics.DrawRectangle(linePen, headerRect);
-            graphics.DrawString("Magic", headerFont, XBrushes.Black, headerRect, XStringFormats.Center);
-            currentPoint.Offset(0, 10);
-            XFont font = new XFont("Verdana", 10);
-
-            #region Header
-
-            var levelRect = new XRect() { Height = 10, Width = 20, Location = currentPoint };
-            graphics.DrawRectangle(linePen, levelRect);
-            graphics.DrawString("lvl", font, XBrushes.Black, levelRect, XStringFormats.Center);
-            currentPoint.Offset(levelRect.Width, 0);
-
-            var totalSlotsRect = new XRect() { Height = 10, Width = 25, Location = currentPoint };
-            graphics.DrawRectangle(linePen, levelRect);
-            graphics.DrawString("Total", font, XBrushes.Black, totalSlotsRect, XStringFormats.Center);
-            currentPoint.Offset(totalSlotsRect.Width, 0);
-
-            var outRect = new XRect() { Height = 10, Width = 20, Location = currentPoint };
-            graphics.DrawRectangle(linePen, levelRect);
-            graphics.DrawString("Out", font, XBrushes.Black, outRect, XStringFormats.Center);
-            currentPoint.Offset(outRect.Width, 0);
-
-            // Header outline
-            var splitWidth = containingRectangle.Width - (levelRect.Width + totalSlotsRect.Width + outRect.Width);
-            
-            var headerRectangle = new XRect() { Width = width, Height = 10, Location = currentPoint };
-
-            // Total
-            var nameRect = new XRect() { Width = splitWidth / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, nameRect);
-            graphics.DrawString("Total Mana", font, XBrushes.Black, nameRect, XStringFormats.Center);
-
-            // TotalVal
-            currentPoint.Offset(splitWidth / 6, 0);
-            var totalRect = new XRect() { Width = splitWidth / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, nameRect);
-
-            int total = CalculateTotalMana(characterDetails);
-
-            graphics.DrawString(total.ToString(), font, XBrushes.Black, totalRect, XStringFormats.Center);
-
-            // Mnemonics
-            currentPoint.X += splitWidth / 6;
-            var SelfTaliRect = new XRect() { Width = splitWidth / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, SelfTaliRect);
-            graphics.DrawString("Mnemonic", font, XBrushes.Black, SelfTaliRect, XStringFormats.Center);
-
-            currentPoint.X += splitWidth / 6;
-            var medCountRect = new XRect() { Width = splitWidth / 6, Height = 10, Location = currentPoint };
-            var tempPoint = currentPoint;
-            for (int i = 0; i < characterDetails.Mnemonics; ++i)
+            var secondRightLineRegion = new XRect()
             {
-                XPoint start = new XPoint(tempPoint.X + 2, tempPoint.Y + 2);
-                XPoint end = new XPoint(start.X + 6, start.Y + 6);
-                XRect containingBox = new XRect(start, end);
-                graphics.DrawEllipse(linePen, containingBox);
-                tempPoint.X += 10;
-            }
+                Width = innerRegion.Width - 3 * columnHeaderWidth,
+                Height = 3 * DrawingUtils.DefaultLineHeight,
+                Location = new XPoint()
+                {
+                    X = innerRegion.Left + 3 * columnHeaderWidth,
+                    Y = levelFiveLines.Bottom
+                }
+            };
 
-            // Regain
-            currentPoint.X += splitWidth / 6;
-            var medsRect = new XRect() { Width = splitWidth /6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, medsRect);
-            graphics.DrawString("Regain", font, XBrushes.Black, medsRect, XStringFormats.Center);
+            DrawingUtils.FilLRegionWithLines(secondRightLineRegion);
 
-            // RegainValue
-            currentPoint.Offset(splitWidth/ 6, 0);
-            var fooRect = new XRect() { Width = splitWidth / 6, Height = 10, Location = currentPoint };
-            graphics.DrawRectangle(linePen, nameRect);
-            graphics.DrawString(characterDetails.Regain.ToString(), font, XBrushes.Black, fooRect, XStringFormats.Center);
+            var nineSlots = characterDetails.SpellSlots[8];
+            var tenSlots = characterDetails.SpellSlots[9];
 
-            #endregion
+            DrawingUtils.TextRectangle(nineSlots.Level.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle(nineSlots.Total.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle(nineSlots.Out.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            currentPoint.X = innerRegion.Width / 2;
+
+            DrawingUtils.TextRectangle(tenSlots.Level.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle(tenSlots.Total.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
+
+            DrawingUtils.TextRectangle(tenSlots.Out.ToString(), columnHeaderWidth, currentPoint);
+            currentPoint.Offset(columnHeaderWidth, 0);
         }
 
         private static int CalculateTotalMana(MagicDetails magicDetails)
@@ -164,7 +163,7 @@ namespace PDFBattleBoard.View
             {
                 value += item.Total * item.Level;
             }
-            return value;   
+            return value;
         }
     }
 }

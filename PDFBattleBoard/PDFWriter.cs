@@ -22,6 +22,8 @@ namespace PDFBattleBoard
             //For drawing in PDF Page you will nedd XGraphics Object
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
+
+
             var defaultCharacter = CharacterBuilder.BuildCharacter();
 
             CharacterDrawer.DrawCharacter(defaultCharacter, gfx, new XRect() { Height = page.Height, Width = page.Width });

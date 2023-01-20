@@ -44,14 +44,17 @@ namespace PDFBattleBoard.Utils
                         Total = 500,
                         Talisman = 0,
                         Self = 0,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = false
                     },
                     new PoolAbility() {
                         Name = "Power",
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = true,
+                        Out = 75
                     },
                     new PoolAbility()
                     {
@@ -59,7 +62,8 @@ namespace PDFBattleBoard.Utils
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
-                        MedCharges = 2
+                        MedCharges = 2,
+                        HasOut = false
                     }
                 },
                 ChargedAbilities = new List<ChargedAbility>()
@@ -71,6 +75,13 @@ namespace PDFBattleBoard.Utils
                         Frequent = Frequency.Daily,
                         Source = Source.Ability
                     },
+                    new ChargedAbility()
+                    {
+                        Name = "Resist Dismember",
+                        Charges = 2,
+                        Frequent = Frequency.Sectional,
+                        Source = Source.Ability
+                    },
                      new ChargedAbility()       {
                         Name = "Resist Disarm",
                         Charges = 4,
@@ -78,7 +89,7 @@ namespace PDFBattleBoard.Utils
                         Source = Source.Ability
                     },
                     new ChargedAbility()  {
-                        Name = "Resist Dismember",
+                        Name = "Resist Bonebrake",
                         Charges = 3,
                         Frequent = Frequency.PerEvent,
                         Source = Source.Ability
@@ -112,6 +123,20 @@ namespace PDFBattleBoard.Utils
                     {
                         Name = "Heal",
                         Charges = 1,
+                        Frequent = Frequency.OnceEver,
+                        Source = Source.Item
+                    },
+                    new ChargedAbility()
+                    {
+                        Name = "Banish Bastard",
+                        Charges = 5,
+                        Frequent = Frequency.OnceEver,
+                        Source = Source.Item
+                    },
+                    new ChargedAbility()
+                    {
+                        Name = "Control Fish",
+                        Charges = 5,
                         Frequent = Frequency.OnceEver,
                         Source = Source.Item
                     }
