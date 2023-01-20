@@ -11,6 +11,7 @@ namespace PDFBattleBoard.View
 
         XFont HeaderFont = new XFont("Verdana", 10, XFontStyle.Bold);
         XFont TextFont = new XFont("Verdana", 10);
+        XFont TitleFont = new XFont("Verdana", 20);
         XPen DefaultPen = new XPen(XBrushes.Black);
         XPen ThinPen = new XPen(XBrushes.Black, 0.5);
 
@@ -40,6 +41,19 @@ namespace PDFBattleBoard.View
             };
 
             return lowerRegion;
+        }
+
+        internal void HeaderTextRectangle(string text, double width, XPoint currentPoint)
+        {
+            var totalRect = new XRect() { Width = width, Height = DefaultLineHeight * 2, Location = currentPoint };
+            Graphics.DrawRectangle(DefaultPen, totalRect);
+            Graphics.DrawString(text, TitleFont, XBrushes.Black, totalRect, XStringFormats.Center);
+        }
+
+        internal void EmptyBox(double width, double height, XPoint currentPoint)
+        {
+            var totalRect = new XRect() { Width = width, Height = height, Location = currentPoint };
+            Graphics.DrawRectangle(DefaultPen, totalRect);
         }
 
         internal void TextRectangle(string text, double width, XPoint currentPoint)

@@ -17,7 +17,7 @@ namespace PDFBattleBoard.View
             return 13 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
         }
 
-        public void DrawMagic(MagicDetails characterDetails, XGraphics graphics, XRect containingRectangle)
+        public void DrawMagic(MagicDetails characterDetails, XRect containingRectangle)
         {
             var innerRegion = DrawingUtils.CreateRegion(containingRectangle, "Magic");
 

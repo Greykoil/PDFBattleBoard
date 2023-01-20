@@ -13,7 +13,7 @@ namespace PDFBattleBoard.View
         }
 
 
-        public void DrawPool(PoolAbility ability, XGraphics graphics, XRect containingRectangle)
+        public void DrawPool(PoolAbility ability, XRect containingRectangle)
         {
             // Do something if the rectangle is too small. Otherwise we won't have space to work with
             var innerRegion = DrawingUtils.CreateRegion(containingRectangle, ability.Name);

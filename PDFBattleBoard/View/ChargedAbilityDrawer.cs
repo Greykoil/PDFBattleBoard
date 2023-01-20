@@ -28,7 +28,7 @@ namespace PDFBattleBoard.View
                 Math.Ceiling((double)doubledUpAbilites.Count() / 2) * DrawingUtils.DefaultLineHeight; // One line for every 2 doubled up abilites
         }
 
-        public void DrawChargedSkills(IEnumerable<ChargedAbility> abilities, XGraphics graphics, XRect xRect)
+        public void DrawChargedSkills(IEnumerable<ChargedAbility> abilities, XRect xRect)
         {
             var innerRegion = DrawingUtils.CreateRegion(xRect, abilities.First().Source.ToString());
 
