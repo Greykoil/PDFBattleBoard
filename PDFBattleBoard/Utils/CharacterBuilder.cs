@@ -29,7 +29,7 @@ namespace PDFBattleBoard.Utils
 
         public static Character BuildCharacter()
         {
-            return DemoCharacter();
+            return Igor();
         }
 
         public static Character DemoCharacter()
@@ -80,7 +80,7 @@ namespace PDFBattleBoard.Utils
                     },
                     new PoolAbility()
                     {
-                        Name = "Kai",
+                        Name = "Ki",
                         Total = 200,
                         Talisman = 50,
                         Self = 150,
@@ -90,6 +90,20 @@ namespace PDFBattleBoard.Utils
                 },
                 ChargedAbilities = new List<ChargedAbility>()
                 {
+                    new ChargedAbility()
+                    {
+                        Name = "Dismiss Undead",
+                        Charges = 1,
+                        Frequent = Frequency.Daily,
+                        Source = Source.Item
+                    },
+                    new ChargedAbility()
+                    {
+                        Name = "Do the Thing",
+                        Charges = 1,
+                        Frequent = Frequency.Sectional,
+                        Source = Source.Item
+                    },
                     new ChargedAbility()
                     {
                         Name = "Resist Knockback",
@@ -164,7 +178,7 @@ namespace PDFBattleBoard.Utils
                     },
                     new ChargedAbility()
                     {
-                        Name = "This Ability Name is Too Long",
+                        Name = "This Ability Name is very Long",
                         Charges = 5,
                         Frequent = Frequency.OnceEver,
                         Source = Source.Item

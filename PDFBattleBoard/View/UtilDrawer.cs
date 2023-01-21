@@ -65,7 +65,16 @@ namespace PDFBattleBoard.View
         {
             var totalRect = new XRect() { Width = width, Height = DefaultLineHeight, Location = currentPoint };
             Graphics.DrawRectangle(DefaultPen, totalRect);
-            Graphics.DrawString(text, font, XBrushes.Black, totalRect, XStringFormats.Center);
+
+            var writingFont = font;
+
+            while (Graphics.MeasureString(text, writingFont).Width > width ||
+                   Graphics.MeasureString(text, writingFont).Height > DefaultLineHeight)
+            {
+                writingFont = new XFont(font.Name, writingFont.Size - 0.1);
+            }
+            
+            Graphics.DrawString(text, writingFont, XBrushes.Black, totalRect, XStringFormats.Center);
         }
 
         internal void CheckCircleRectangle(int checkCircles, double width, XPoint currentPoint)
@@ -85,6 +94,23 @@ namespace PDFBattleBoard.View
             }
         }
 
+        internal void CheckBoxRectangle(int checkBoxCount, double width, XPoint currentPoint)
+        {
+            var totalRect = new XRect() { Width = width, Height = DefaultLineHeight, Location = currentPoint };
+            Graphics.DrawRectangle(DefaultPen, totalRect);
+
+            double boxBuffer = 3;
+            double boxSize = DefaultLineHeight - (2 * boxBuffer);
+            for (int i = 0; i < checkBoxCount; ++i)
+            {
+                XPoint start = new XPoint(currentPoint.X + boxBuffer, currentPoint.Y + boxBuffer);
+                XPoint end = new XPoint(start.X + boxSize, start.Y + boxSize);
+                XRect containingBox = new XRect(start, end);
+                Graphics.DrawRectangle(DefaultPen, containingBox);
+                currentPoint.X += DefaultLineHeight;
+            }
+        }
+        
         internal void TextRectangle(string text, XRect emptyOutRect, XStringFormat format)
         {
             Graphics.DrawRectangle(DefaultPen, emptyOutRect);

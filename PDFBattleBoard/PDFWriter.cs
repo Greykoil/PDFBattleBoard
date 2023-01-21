@@ -24,16 +24,26 @@ namespace PDFBattleBoard
 
             CharacterDrawer.DrawCharacter(defaultCharacter, gfx, new XRect() { Height = page.Height, Width = page.Width });
 
+            string outputDir = "OutputPDFs";
+            if (!Directory.Exists(outputDir))
+            {
+                Directory.CreateDirectory(outputDir);
+            }
             //Specify file name of the PDF file
             string filename = $"{defaultCharacter.Details.Name}.pdf";
+            
+            string fullOutputPath = Path.Combine(outputDir, filename);
+            
             //Save PDF File
-            document.Save(filename);
+            document.Save(fullOutputPath);
 
+            var currentDir = Directory.GetCurrentDirectory();
             using (Process p = new Process())
             {
                 p.StartInfo = new ProcessStartInfo()
                 {
                     UseShellExecute = true,
+                    WorkingDirectory = Path.Combine(currentDir, outputDir),
                     FileName = filename
                 };
 
