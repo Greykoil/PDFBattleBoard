@@ -80,12 +80,18 @@ namespace PDFBattleBoard.View
             #region RightSide
             var drawer = new UtilDrawer(graphics);
             var foo = new ChargedAbilityDrawer(drawer);
-            
-            var abilityHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Ability));
 
-            var itemHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Item));
+            var abilityHeight =
+                character.ChargedAbilities.Any(x => x.Source == Source.Ability) ?
+                    foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Ability)) : 0;
 
-            var storeHeight = foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Store));
+            var itemHeight =
+                character.ChargedAbilities.Any(x => x.Source == Source.Item) ?
+                    foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Item)) : 0;
+
+            var storeHeight = 
+                character.ChargedAbilities.Any(x => x.Source == Source.Store) ?
+                foo.CalculateAbilityHeight(character.ChargedAbilities.Where(x => x.Source == Source.Store)) : 0;
 
             double rightSidePoolSpace = totalPageHeight - abilityHeight - itemHeight - storeHeight - headerHeight;
 
@@ -103,7 +109,10 @@ namespace PDFBattleBoard.View
                 Height = abilityHeight,
                 Location = poolRect.BottomLeft
             };
-            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Ability), chargedAbilitesRect, graphics);
+            if (character.ChargedAbilities.Any(x => x.Source == Source.Ability))
+            {
+                DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Ability), chargedAbilitesRect, graphics);
+            }
 
             XRect ItemAbilitesRect = new XRect()
             {
@@ -111,7 +120,10 @@ namespace PDFBattleBoard.View
                 Height = itemHeight,
                 Location = chargedAbilitesRect.BottomLeft
             };
-            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Item), ItemAbilitesRect, graphics);
+            if (character.ChargedAbilities.Any(x => x.Source == Source.Item))
+            {
+                DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Item), ItemAbilitesRect, graphics);
+            }
 
             XRect storesAbilityRect = new XRect()
             {
@@ -119,9 +131,10 @@ namespace PDFBattleBoard.View
                 Height = storeHeight,
                 Location = ItemAbilitesRect.BottomLeft
             };
-
-            DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Store), storesAbilityRect, graphics);
-
+            if (character.ChargedAbilities.Any(x => x.Source == Source.Store))
+            {
+                DrawChargedAbilites(character.ChargedAbilities.Where(x => x.Source == Source.Store), storesAbilityRect, graphics);
+            }
 
             #endregion
         }

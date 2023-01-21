@@ -15,11 +15,9 @@ namespace PDFBattleBoard.View
 
         public double CalculateAbilityHeight(IEnumerable<ChargedAbility> abilities)
         {
-
             var singleLineAbilites = abilities.Where(x => x.Charges > 7 || x.Frequent == Frequency.Sectional && x.Charges > 2);
 
             var doubledUpAbilites = abilities.Where(x => !singleLineAbilites.Contains(x));
-
 
             return
                 DrawingUtils.RegionBuffer * 2 + // The buffer above and below the box
@@ -32,7 +30,7 @@ namespace PDFBattleBoard.View
         {
             var innerRegion = DrawingUtils.CreateRegion(xRect, abilities.First().Source.ToString());
 
-            var singleLineAbilites = abilities.Where(x => x.Charges > 7 || x.Frequent == Frequency.Sectional && x.Charges > 3);
+            var singleLineAbilites = abilities.Where(x => x.Charges > 7 || x.Frequent == Frequency.Sectional && x.Charges > 2);
 
             var doubledUpAbilites = abilities.Where(x => !singleLineAbilites.Contains(x));
 

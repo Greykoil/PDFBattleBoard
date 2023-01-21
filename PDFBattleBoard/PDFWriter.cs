@@ -10,7 +10,7 @@ namespace PDFBattleBoard
     internal class PDFWriter
     {
 
-        static public void WritePdf()
+        static public void WritePdf(Character defaultCharacter)
         {
             //Create PDF Document
             PdfDocument document = new PdfDocument();
@@ -21,10 +21,6 @@ namespace PDFBattleBoard
 
             //For drawing in PDF Page you will nedd XGraphics Object
             XGraphics gfx = XGraphics.FromPdfPage(page);
-
-
-
-            var defaultCharacter = CharacterBuilder.BuildCharacter();
 
             CharacterDrawer.DrawCharacter(defaultCharacter, gfx, new XRect() { Height = page.Height, Width = page.Width });
 
@@ -44,5 +40,19 @@ namespace PDFBattleBoard
                 p.Start();
             }
         }
+
+        internal static void CreateDemoPages()
+        {
+            foreach (var character in CharacterBuilder.BuildAllCharacters())
+            {
+                WritePdf(character);
+            }
+        }
+
+        internal static void CreateSinglePage() 
+        {
+            WritePdf(CharacterBuilder.BuildCharacter());
+        }
+
     }
 }
