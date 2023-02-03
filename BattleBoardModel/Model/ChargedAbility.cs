@@ -1,13 +1,13 @@
-﻿namespace PDFBattleBoard.Model
+﻿namespace BattleBoardModel.Model
 {
-    internal enum Source
+    public enum Source
     {
         Ability,
         Item,
         Store
     }
 
-    internal enum Frequency
+    public enum Frequency
     {
         Sectional,
         Daily,
@@ -15,7 +15,7 @@
         OnceEver
     }
 
-    internal class ChargedAbility
+    public class ChargedAbility
     {
         public string Name { get; set; }
         public int Charges { get; set; }

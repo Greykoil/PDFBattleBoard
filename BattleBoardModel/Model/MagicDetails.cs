@@ -1,13 +1,13 @@
-﻿namespace PDFBattleBoard.Model
+﻿namespace BattleBoardModel.Model
 {
-    struct SpellSlots
+    public struct SpellSlots
     {
         public int Level { get; set; }
         public int Total { get; set; }
         public int Out { get; set; }
 
     }
-    internal class MagicDetails
+    public class MagicDetails
     {
         public List<SpellSlots> SpellSlots { get; set; }
         public int Mnemonics { get; set; }

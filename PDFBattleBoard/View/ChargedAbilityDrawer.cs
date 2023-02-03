@@ -1,4 +1,4 @@
-﻿using PDFBattleBoard.Model;
+﻿using BattleBoardModel.Model;
 using PdfSharpCore.Drawing;
 
 namespace PDFBattleBoard.View

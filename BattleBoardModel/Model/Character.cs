@@ -1,6 +1,6 @@
-﻿namespace PDFBattleBoard.Model
+﻿namespace BattleBoardModel.Model
 {
-    internal class Character
+    public class Character
     {
 
         public CharacterDetails Details { get; set; }

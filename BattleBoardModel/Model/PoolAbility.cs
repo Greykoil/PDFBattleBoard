@@ -1,6 +1,6 @@
-﻿namespace PDFBattleBoard.Model
+﻿namespace BattleBoardModel.Model
 {
-    internal class PoolAbility
+    public class PoolAbility
     {
         public string Name { get; set; }
         public int Total { get; set; }

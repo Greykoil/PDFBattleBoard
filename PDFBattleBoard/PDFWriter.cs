@@ -1,5 +1,5 @@
-﻿using PDFBattleBoard.Model;
-using PDFBattleBoard.Utils;
+﻿using BattleBoardModel.Model;
+using BattleBoardModel.Utils;
 using PDFBattleBoard.View;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;

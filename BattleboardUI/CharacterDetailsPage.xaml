@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BattleboardUI.CharacterPage"
+             Title="CharacterPage">
+
+    <Grid RowDefinitions="*,Auto,Auto,Auto,Auto,Auto,*"
+          ColumnDefinitions="*,Auto,Auto,*">
+        <Label 
+            Grid.Row="1"
+            Grid.Column="1"
+            Text="Character Name"
+        />
+        <Entry
+            Grid.Row="1"
+            Grid.Column="2"
+            Text="{Binding CharacterName}"
+        />
+        <Label 
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="Character Race"
+        />
+        <Picker
+            Grid.Row="2"
+            Grid.Column="2"
+            ItemsSource="{Binding RaceOptions}"
+            ItemDisplayBinding="{Binding .}"
+            SelectedItem="{Binding CharacterRace}"
+            />
+        <Label 
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="Character Class"
+        />
+        <Picker
+            Grid.Row="3"
+            Grid.Column="2"
+            ItemsSource="{Binding ClassOptions}"
+            ItemDisplayBinding="{Binding .}"
+            SelectedItem="{Binding CharacterClass}"
+            />
+        <Label 
+            Grid.Row="4"
+            Grid.Column="1"
+            Text="Character Points"
+        />
+        <Entry
+            Grid.Row="4"
+            Grid.Column="2"
+            Placeholder="Number"
+            Keyboard="Numeric"
+            Text="{Binding CharacterPoints}"
+        />
+        <Label 
+            Grid.Row="5"
+            Grid.Column="1"
+            Text="Res Chances"
+        />
+        <Entry
+            Grid.Row="5"
+            Grid.Column="2"
+            Placeholder="Number"
+            Keyboard="Numeric"
+            Text="{Binding CharacterResChances}"
+        />
+        <Label 
+            Grid.Row="6"
+            Text="{Binding CharacterDetailsString}"
+        />
+    </Grid>
+
+</ContentPage>
