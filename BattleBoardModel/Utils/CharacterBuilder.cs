@@ -29,7 +29,7 @@ namespace BattleBoardModel.Utils
 
         public static Character BuildCharacter()
         {
-            return Igor();
+            return DemoCharacter();
         }
 
         public static Character DemoCharacter()

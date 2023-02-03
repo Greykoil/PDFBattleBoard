@@ -9,5 +9,5 @@ public partial class CharacterPage : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = new PlayerDetailsViewModel(CharacterBuilder.BuildCharacter().Details);
-	}
+    }
 }

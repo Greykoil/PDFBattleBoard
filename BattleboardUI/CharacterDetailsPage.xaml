@@ -10,6 +10,7 @@
             Grid.Row="1"
             Grid.Column="1"
             Text="Character Name"
+            VerticalOptions="Center"
         />
         <Entry
             Grid.Row="1"
@@ -20,6 +21,7 @@
             Grid.Row="2"
             Grid.Column="1"
             Text="Character Race"
+            VerticalOptions="Center"
         />
         <Picker
             Grid.Row="2"
@@ -32,6 +34,7 @@
             Grid.Row="3"
             Grid.Column="1"
             Text="Character Class"
+            VerticalOptions="Center"
         />
         <Picker
             Grid.Row="3"
@@ -44,6 +47,7 @@
             Grid.Row="4"
             Grid.Column="1"
             Text="Character Points"
+            VerticalOptions="Center"
         />
         <Entry
             Grid.Row="4"
@@ -56,6 +60,7 @@
             Grid.Row="5"
             Grid.Column="1"
             Text="Res Chances"
+            VerticalOptions="Center"
         />
         <Entry
             Grid.Row="5"

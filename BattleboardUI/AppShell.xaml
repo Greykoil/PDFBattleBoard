@@ -16,6 +16,11 @@
             Title="Character Page"
             ContentTemplate="{DataTemplate local:CharacterPage}"
             Route="CharacterPage" />
+        
+        <ShellContent
+            Title="Armour Page"
+            ContentTemplate="{DataTemplate local:ArmourPage}"
+            Route="ArmourPage" />
     </TabBar>
 
 </Shell>
