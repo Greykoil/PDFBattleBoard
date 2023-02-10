@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BattleboardUI.AbilityPage"
+             xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
+             Title="AbilityPage">
+
+    <Grid ColumnDefinitions="*,*,*,*,*"
+      ColumnSpacing="5"
+      RowDefinitions="Auto,*"
+      RowSpacing="0">
+        <Entry  Grid.Column="0" Text="{Binding NewAbilityName}"/>
+        <Entry  Grid.Column="1" Text="{Binding NewAbilityCharges}" Keyboard="Numeric"/>
+        <Picker
+            Grid.Column="2"
+            ItemsSource="{Binding NewAbilityFrequencyOptions}"
+            ItemDisplayBinding="{Binding .}"
+            SelectedItem="{Binding NewAbilityFrequency}"
+            />
+        <Picker
+            Grid.Column="3"
+            ItemsSource="{Binding NewAbilitySourceOptions}"
+            ItemDisplayBinding="{Binding .}"
+            SelectedItem="{Binding NewAbilitySource}"
+            />
+        <Button Text="Add New Ability" Command="{Binding AddNewAbility}" Grid.Column="4"/>
+        
+        <CollectionView BackgroundColor="HotPink" Grid.Row="2" Grid.ColumnSpan="5" ItemsSource="{Binding Abilites}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="50" Padding="0">
+                            <Grid Padding="0" ColumnDefinitions="*,*,*,*,*">
+                                <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray"/>
+                                <Label Text="{Binding Charges}" Grid.Column="1" BackgroundColor="LightGray" />
+                                <Label Text="{Binding Frequent}" Grid.Column="2" BackgroundColor="LightGray"/>
+                                <Label Text="{Binding Source}" Grid.Column="3" BackgroundColor="LightGray"/>
+                                <Button Text="Delete" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:AbilityViewModel}}, Path=DeleteAbility}"
+                                        CommandParameter="{Binding .}"
+                                        Grid.Column="4"/>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+
+</ContentPage>

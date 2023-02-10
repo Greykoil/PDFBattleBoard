@@ -21,6 +21,16 @@
             Title="Armour Page"
             ContentTemplate="{DataTemplate local:ArmourPage}"
             Route="ArmourPage" />
+
+        <ShellContent
+            Title="Abilites Page"
+            ContentTemplate="{DataTemplate local:AbilityPage}"
+            Route="AbilitesPage" />
+
+        <ShellContent
+            Title="Abilites Page"
+            ContentTemplate="{DataTemplate local:PoolAbilityPage}"
+            Route="AbilitesPage" />
     </TabBar>
 
 </Shell>
