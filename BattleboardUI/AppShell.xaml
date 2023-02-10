@@ -36,6 +36,11 @@
             Title="Magic Page"
             ContentTemplate="{DataTemplate local:MagicPage}"
             Route="MagicPage" />
+
+        <ShellContent
+            Title="Load and Save Page"
+            ContentTemplate="{DataTemplate local:LoadAndSavePage}"
+            Route="LoasAndSavePage" />
     </TabBar>
 
 </Shell>
