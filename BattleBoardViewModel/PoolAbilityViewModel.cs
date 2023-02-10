@@ -1,4 +1,5 @@
-﻿using BattleBoardModel.Model;
+﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -20,11 +21,11 @@ namespace BattleBoardViewModel
 
         public ObservableCollection<PoolAbility> PoolAbilities { get; } = new ObservableCollection<PoolAbility>();
 
-        public PoolAbilityViewModel(IEnumerable<PoolAbility> poolAbilities)
+        public PoolAbilityViewModel(ICharacterInterface characterInterface)
         {
-            _poolAbilities = poolAbilities.ToList();
+            _poolAbilities = characterInterface.GetCharacter().PoolAbilites;
 
-            foreach (var item in poolAbilities)
+            foreach (var item in _poolAbilities)
             {
                 PoolAbilities.Add(item);
             }

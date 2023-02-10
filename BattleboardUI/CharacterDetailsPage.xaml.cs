@@ -8,6 +8,6 @@ public partial class CharacterPage : ContentPage
 	public CharacterPage()
 	{
 		InitializeComponent();
-		BindingContext = new PlayerDetailsViewModel(CharacterBuilder.BuildCharacter().Details);
+        BindingContext = ServiceHelper.GetService<PlayerDetailsViewModel>();
     }
 }

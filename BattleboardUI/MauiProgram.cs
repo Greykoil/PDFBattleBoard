@@ -1,4 +1,7 @@
-﻿namespace BattleboardUI
+﻿using BattleBoardModel;
+using BattleBoardViewModel;
+
+namespace BattleboardUI
 {
     public static class MauiProgram
     {
@@ -12,6 +15,15 @@
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<ICharacterInterface>(new CharacterInterface());
+
+
+            builder.Services.AddSingleton<AbilityViewModel>();
+            builder.Services.AddSingleton<ArmourViewModel>();
+            builder.Services.AddSingleton<LoadAndSaveViewModel>();
+            builder.Services.AddSingleton<PlayerDetailsViewModel>();
+            builder.Services.AddSingleton<PoolAbilityViewModel>();
 
             return builder.Build();
         }

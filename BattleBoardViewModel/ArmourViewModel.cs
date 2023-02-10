@@ -1,4 +1,5 @@
-﻿using BattleBoardModel.Model;
+﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -32,9 +33,9 @@ namespace BattleBoardViewModel
             }
         }
 
-        public ArmourViewModel(Armour armour)
+        public ArmourViewModel(ICharacterInterface characterInterface)
         {
-            _armour = armour;
+            _armour = characterInterface.GetCharacter().Details.CharacterArmour;
             foreach (var item in _armour.Values)
             {
                 ArmourValues.Add(item);

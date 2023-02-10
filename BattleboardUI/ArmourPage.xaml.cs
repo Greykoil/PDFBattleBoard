@@ -8,6 +8,6 @@ public partial class ArmourPage : ContentPage
 	public ArmourPage()
 	{
 		InitializeComponent();
-		BindingContext = new ArmourViewModel(CharacterBuilder.BuildCharacter().Details.CharacterArmour);
+		BindingContext = ServiceHelper.GetService<ArmourViewModel>();
     }
 }

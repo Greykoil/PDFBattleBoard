@@ -1,4 +1,5 @@
-﻿using BattleBoardModel.Model;
+﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -10,11 +11,11 @@ namespace BattleBoardViewModel
 
         public ObservableCollection<ChargedAbility> Abilites { get; } = new ObservableCollection<ChargedAbility>();
 
-        public AbilityViewModel(IEnumerable<ChargedAbility> abilities) 
+        public AbilityViewModel(ICharacterInterface characterInterface) 
         {
-            _abilities = abilities.ToList();
+            _abilities = characterInterface.GetCharacter().ChargedAbilities.ToList();
 
-            foreach (var item in abilities)
+            foreach (var item in _abilities)
             {
                 Abilites.Add(item);
             }

@@ -1,4 +1,5 @@
-﻿using BattleBoardModel.Model;
+﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 
 namespace BattleBoardViewModel
 {
@@ -7,9 +8,9 @@ namespace BattleBoardViewModel
 
         private CharacterDetails Player;
 
-        public PlayerDetailsViewModel(CharacterDetails details)
+        public PlayerDetailsViewModel(ICharacterInterface characterInterface)
         {
-            Player = details;
+            Player = characterInterface.GetCharacter().Details;
         }
 
         public string CharacterName
