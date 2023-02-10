@@ -18,12 +18,12 @@ namespace BattleboardUI
 
             builder.Services.AddSingleton<ICharacterInterface>(new CharacterInterface());
 
-
             builder.Services.AddSingleton<AbilityViewModel>();
             builder.Services.AddSingleton<ArmourViewModel>();
             builder.Services.AddSingleton<LoadAndSaveViewModel>();
             builder.Services.AddSingleton<PlayerDetailsViewModel>();
             builder.Services.AddSingleton<PoolAbilityViewModel>();
+            builder.Services.AddSingleton<MagicViewModel>();
 
             return builder.Build();
         }

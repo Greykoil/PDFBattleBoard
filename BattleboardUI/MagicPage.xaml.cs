@@ -8,6 +8,6 @@ public partial class MagicPage : ContentPage
 	public MagicPage()
 	{
 		InitializeComponent();
-        BindingContext = new MagicViewModel(CharacterBuilder.BuildCharacter().CharacterMagic);
+        BindingContext = ServiceHelper.GetService<MagicViewModel>();
     }
 }

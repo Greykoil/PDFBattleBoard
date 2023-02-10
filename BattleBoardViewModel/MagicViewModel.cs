@@ -1,4 +1,5 @@
-﻿using BattleBoardModel.Model;
+﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -11,10 +12,10 @@ namespace BattleBoardViewModel
 
         private MagicDetails _magic;
 
-        public MagicViewModel(MagicDetails magic)
+        public MagicViewModel(ICharacterInterface characterInterface)
         {
-            _magic = magic;
-            foreach (var item in magic.SpellSlots)
+            _magic = characterInterface.GetCharacter().CharacterMagic;
+            foreach (var item in _magic.SpellSlots)
             {
                 MagicSlots.Add(item);
             }
