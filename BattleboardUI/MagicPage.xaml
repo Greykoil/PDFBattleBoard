@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BattleboardUI.MagicPage"
+              xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
+             Title="MagicPage">
+    <Grid ColumnDefinitions="*,*,*,*"
+      ColumnSpacing="5"
+      RowDefinitions="Auto,Auto,*"
+      RowSpacing="0">
+        <Entry  Grid.Column="0" Text="{Binding NewMagicLevel.Level}" Keyboard="Numeric"/>
+        <Entry  Grid.Column="1" Text="{Binding NewMagicLevel.Total}" Keyboard="Numeric"/>
+        <Entry  Grid.Column="2" Text="{Binding NewMagicLevel.Out}" Keyboard="Numeric"/>
+        <Button Text="Add New Value" Command="{Binding AddNewMagicSlot}" Grid.Column="4"/>
+        <Entry Grid.Row="1" Grid.Column="0" Text="{Binding MagicDetails.Mnemonics}"/>
+        <Entry Grid.Row="1" Grid.Column="2" Text="{Binding MagicDetails.Regain}"/>
+        <CollectionView BackgroundColor="HotPink" Grid.Row="3" Grid.ColumnSpan="4" ItemsSource="{Binding MagicSlots}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="50" Padding="0">
+                            <Grid Padding="0" ColumnDefinitions="*,*,*,*">
+                                <Label Text="{Binding Level}" Grid.Column="0" BackgroundColor="LightGray"/>
+                                <Label Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray"/>
+                                <Label Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
+                                <Button Text="Delete" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:MagicViewModel}}, Path=DeleteMagicSlot}"
+                                        CommandParameter="{Binding .}"
+                                        Grid.Column="3"/>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

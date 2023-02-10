@@ -28,9 +28,14 @@
             Route="AbilitesPage" />
 
         <ShellContent
-            Title="Abilites Page"
+            Title="Pool Abilities Page"
             ContentTemplate="{DataTemplate local:PoolAbilityPage}"
-            Route="AbilitesPage" />
+            Route="PoolAbilitesPage" />
+
+        <ShellContent
+            Title="Magic Page"
+            ContentTemplate="{DataTemplate local:MagicPage}"
+            Route="MagicPage" />
     </TabBar>
 
 </Shell>
