@@ -1,5 +1,6 @@
 ﻿using BattleBoardModel;
 using BattleBoardViewModel;
+using CommunityToolkit.Maui;
 
 namespace BattleboardUI
 {
@@ -10,6 +11,7 @@ namespace BattleboardUI
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
