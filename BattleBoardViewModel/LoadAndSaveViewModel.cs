@@ -1,5 +1,7 @@
 ﻿using BattleBoardModel;
+using BattleBoardModel.Model;
 using CommunityToolkit.Maui.Storage;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +28,7 @@ namespace BattleBoardViewModel
             SaveCharacter = new Command(OnSaveCharacter);
         }
 
-        private void OnLoadCharacter()
+        private async void OnLoadCharacter()
         {
             PickOptions options = new PickOptions()
             {
@@ -40,15 +42,30 @@ namespace BattleBoardViewModel
                 })
             };
 
-            var result = FilePicker.Default.PickAsync(options);
+            var foobaa = FilePicker.Default.PickAsync(options);
+            
+            var thing2 = await foobaa;
 
+            var thing =  thing2.OpenReadAsync().Result;
+            StreamReader reader = new StreamReader(thing);
+            string text = reader.ReadToEnd();
+
+            Character newChar = JsonConvert.DeserializeObject<Character>(text);
+
+            var foo = _character.GetCharacter();
+            
+            foo = newChar;
         }
 
         private async void OnSaveCharacter()
         {
             CancellationToken token = new CancellationToken();
-            using var stream = new MemoryStream(Encoding.Default.GetBytes("Hello from the Community Toolkit!"));
-            var fileLocation = await FileSaver.Default.SaveAsync("test.txt", stream, token);
+            var output = JsonConvert.SerializeObject(_character.GetCharacter(), Formatting.Indented);
+
+            var repo = new MemoryStream(Encoding.UTF8.GetBytes(output));
+
+            string defaultName = _character.GetCharacter().Details.Name;
+            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".json", repo, token);
         }
     }
 }

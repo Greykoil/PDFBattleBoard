@@ -13,7 +13,7 @@ namespace BattleBoardViewModel
 
         public AbilityViewModel(ICharacterInterface characterInterface) 
         {
-            _abilities = characterInterface.GetCharacter().ChargedAbilities.ToList();
+            _abilities = characterInterface.GetCharacter().ChargedAbilities;
 
             foreach (var item in _abilities)
             {
