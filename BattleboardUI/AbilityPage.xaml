@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="BattleboardUI.AbilityPage"
              xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
+             xmlns:model="clr-namespace:BattleBoardModel.Model;assembly=BattleBoardModel"
              Title="AbilityPage">
-
     <Grid ColumnDefinitions="*,*,*,*,*"
       ColumnSpacing="5"
       RowDefinitions="Auto,*"
       RowSpacing="0">
-        <Entry  Grid.Column="0" Text="{Binding NewAbilityName}"/>
-        <Entry  Grid.Column="1" Text="{Binding NewAbilityCharges}" Keyboard="Numeric"/>
-        <Picker
-            Grid.Column="2"
-            ItemsSource="{Binding NewAbilityFrequencyOptions}"
-            ItemDisplayBinding="{Binding .}"
-            SelectedItem="{Binding NewAbilityFrequency}"
-            />
-        <Picker
-            Grid.Column="3"
-            ItemsSource="{Binding NewAbilitySourceOptions}"
-            ItemDisplayBinding="{Binding .}"
-            SelectedItem="{Binding NewAbilitySource}"
-            />
+        <Entry  Grid.Column="0" Text="{Binding NewAbility.Name}"/>
+        <Entry  Grid.Column="1" Text="{Binding NewAbility.Charges}" Keyboard="Numeric"/>
+        <Picker Grid.Column="2" ItemsSource="{Binding NewAbilityFrequencyOptions}" 
+                SelectedIndex="{Binding NewAbility.Frequent, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Frequency}}" />
+        <Picker Grid.Column="3" ItemsSource="{Binding NewAbilitySourceOptions}" 
+                SelectedIndex="{Binding NewAbility.Source, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Source}}" />
+
         <Button Text="Add New Ability" Command="{Binding AddNewAbility}" Grid.Column="4"/>
-        
+
         <CollectionView BackgroundColor="HotPink" Grid.Row="2" Grid.ColumnSpan="5" ItemsSource="{Binding Abilites}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>

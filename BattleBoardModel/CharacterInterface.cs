@@ -21,5 +21,10 @@ namespace BattleBoardModel
         {
             return currentCharacter;
         }
+
+        public void UpdateCharacter(Character character)
+        {
+            currentCharacter = character;
+        }
     }
 }

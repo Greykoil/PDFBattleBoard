@@ -9,29 +9,7 @@ namespace BattleBoardViewModel
     {
         private Armour _armour;
 
-        private string _newACName = "New Value";
-
-        public string NewACName
-        {
-            get => _newACName;
-            set
-            {
-                _newACName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _newACValue = 0;
-
-        public int NewACValue
-        {
-            get => _newACValue;
-            set
-            {
-                _newACValue = value;
-                OnPropertyChanged();
-            }
-        }
+        public AcValue NewACValue { get; set; }
 
         public ArmourViewModel(ICharacterInterface characterInterface)
         {
@@ -43,6 +21,12 @@ namespace BattleBoardViewModel
             AddNewArmourValue = new Command(OnAddNewAc);
 
             DeleteACValue = new Command<AcValue>(OnDeleteAcValue);
+            _characterInterface = characterInterface;
+            NewACValue = new AcValue()
+            {
+                Name = "New AC",
+                Value = 0
+            };
         }
 
         public ICommand AddNewArmourValue { get; }
@@ -50,20 +34,36 @@ namespace BattleBoardViewModel
         public ICommand DeleteACValue { get; }
 
         public ObservableCollection<AcValue> ArmourValues { get; } = new ObservableCollection<AcValue>();
-        
+        public ICharacterInterface _characterInterface { get; }
+
         private void OnAddNewAc()
         {
-            var newValue = new AcValue() { Name = NewACName, Value = NewACValue };
-            _armour.Values.Add(newValue);
-            ArmourValues.Add(newValue);
-            NewACName = "New Value";
-            NewACValue = 0;
+            _armour.Values.Add(NewACValue);
+            ArmourValues.Add(NewACValue);
+            NewACValue = new AcValue()
+            {
+                Name = "New AC",
+                Value = 0
+            };
+            OnPropertyChanged(nameof(NewACValue));
         }
 
         private void OnDeleteAcValue(AcValue acValue) 
         {
             _armour.Values.Remove(acValue);
             ArmourValues.Remove(acValue);
+        }
+
+        public void OnAppearing()
+        {
+            _armour = _characterInterface.GetCharacter().Details.CharacterArmour;
+
+            ArmourValues.Clear();
+
+            foreach (var item in _armour.Values)
+            {
+                ArmourValues.Add(item);
+            }
         }
     }
 }

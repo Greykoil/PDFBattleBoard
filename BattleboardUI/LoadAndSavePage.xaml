@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BattleboardUI.LoadAndSavePage"
              Title="LoadAndSavePage">
-    <Grid ColumnDefinitions="*,*">
+    <Grid ColumnDefinitions="*,*,*">
         <Button Text="Load Character" Command="{Binding LoadCharacter}" Grid.Column="0"/>
         <Button Text="Save Character" Command="{Binding SaveCharacter}" Grid.Column="1"/>
+        <Button Text="Create PDF" Command="{Binding CreatePDF}" Grid.Column="2"/>
     </Grid>
 </ContentPage>

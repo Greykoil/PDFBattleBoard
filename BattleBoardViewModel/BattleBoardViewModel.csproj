@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BattleBoardModel\BattleBoardModel.csproj" />
+	  <ProjectReference Include="..\PDFBattleBoard\PDFBattleBoard.csproj" />
 	</ItemGroup>
 
 </Project>

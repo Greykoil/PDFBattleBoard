@@ -10,5 +10,8 @@ namespace BattleBoardModel
     public interface ICharacterInterface
     {
         Character GetCharacter();
+
+        void UpdateCharacter(Character character);
+
     }
 }

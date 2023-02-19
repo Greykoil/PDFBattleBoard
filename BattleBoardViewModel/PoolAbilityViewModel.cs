@@ -11,15 +11,13 @@ namespace BattleBoardViewModel
         public ICommand AddNewPoolAbility { get; }
         public ICommand DeletePool { get; }
 
-        public PoolAbility NewPoolAbility
-        { 
-            get; 
-            set; 
-        }
+        public PoolAbility NewPoolAbility { get; set; }
 
         private List<PoolAbility> _poolAbilities;
 
         public ObservableCollection<PoolAbility> PoolAbilities { get; } = new ObservableCollection<PoolAbility>();
+      
+        public ICharacterInterface _characterInterface { get; }
 
         public PoolAbilityViewModel(ICharacterInterface characterInterface)
         {
@@ -42,6 +40,7 @@ namespace BattleBoardViewModel
 
             AddNewPoolAbility = new Command(OnAddNewPoolAbility);
             DeletePool = new Command<PoolAbility>(OnDeletePoolAbility);
+            _characterInterface = characterInterface;
         }
 
         private void OnAddNewPoolAbility()
@@ -51,7 +50,7 @@ namespace BattleBoardViewModel
 
             NewPoolAbility = new PoolAbility()
             {
-                Name = "foo",
+                Name = "New Pool",
                 Total = 1,
                 Out = 0,
                 Self = 0,
@@ -67,5 +66,16 @@ namespace BattleBoardViewModel
             PoolAbilities.Remove(ability);
         }
 
+        public void OnAppearing()
+        {
+            _poolAbilities = _characterInterface.GetCharacter().PoolAbilites;
+
+            PoolAbilities.Clear();
+
+            foreach (var item in _poolAbilities)
+            {
+                PoolAbilities.Add(item);
+            }
+        }
     }
 }

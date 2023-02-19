@@ -10,4 +10,10 @@ public partial class ArmourPage : ContentPage
 		InitializeComponent();
 		BindingContext = ServiceHelper.GetService<ArmourViewModel>();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as ArmourViewModel).OnAppearing();
+    }
 }

@@ -1,18 +1,23 @@
 ﻿using BattleBoardModel;
 using BattleBoardModel.Model;
 using System.Collections.ObjectModel;
+using System.Reflection.Metadata;
 using System.Windows.Input;
 
 namespace BattleBoardViewModel
 {
     public class AbilityViewModel : BindableObject
     {
+
+        private ICharacterInterface _characterInterface;
         private List<ChargedAbility> _abilities;
 
         public ObservableCollection<ChargedAbility> Abilites { get; } = new ObservableCollection<ChargedAbility>();
 
         public AbilityViewModel(ICharacterInterface characterInterface) 
         {
+            _characterInterface = characterInterface;
+
             _abilities = characterInterface.GetCharacter().ChargedAbilities;
 
             foreach (var item in _abilities)
@@ -21,96 +26,55 @@ namespace BattleBoardViewModel
             }
             AddNewAbility = new Command(OnAddNewAbility);
             DeleteAbility = new Command<ChargedAbility>(OnDeleteAbility);
+            NewAbility = new ChargedAbility()
+            {
+                Name = "New Ability",
+                Charges = 0,
+                Source = Source.Ability,
+                Frequent = Frequency.Daily
+            };
         }
 
         public ICommand AddNewAbility { get;  }
         public ICommand DeleteAbility { get;  }
 
-        private string newAbilityName = "New Ability";
-        public string NewAbilityName
-        {
-            get { return newAbilityName; }
-            set {
-                newAbilityName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int newAbilityCharges = 1;
-        public int NewAbilityCharges
-        {
-            get { return newAbilityCharges; }
-            set
-            {
-                newAbilityCharges = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string> NewAbilityFrequencyOptions
-        {
-            get
-            {
-                return Enum.GetNames(typeof(Frequency)).ToList();
-            }
-        }
-
-        private string newAbiltyFrequency;
-
-        public string NewAbilityFrequency
-        {
-            get => newAbiltyFrequency;
-            set
-            {
-                newAbiltyFrequency = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public List<string> NewAbilitySourceOptions
-        {
-            get
-            {
-                return Enum.GetNames(typeof(Source)).ToList();
-            }
-        }
-
-        private string newAbilitySource;
-        
-        public string NewAbilitySource
-        {
-            get => newAbilitySource;
-            set
-            {
-                newAbilitySource = value;
-                OnPropertyChanged();
-            }
-        }
+        public ChargedAbility NewAbility { get; set; }
 
         private void OnAddNewAbility()
         {
-            var newAbility = new ChargedAbility()
+            _abilities.Add(NewAbility);
+            Abilites.Add(NewAbility);
+
+            NewAbility = new ChargedAbility()
             {
-                Name = NewAbilityName,
-                Charges = NewAbilityCharges,
-                Source = Enum.Parse<Source>(NewAbilitySource),
-                Frequent = Enum.Parse<Frequency>(newAbiltyFrequency)
+                Name = "New Ability",
+                Charges = 0,
+                Source = Source.Ability,
+                Frequent = Frequency.Daily
             };
-
-            _abilities.Add(newAbility);
-            Abilites.Add(newAbility);
-
-            NewAbilityName = "New ability name";
-            NewAbilityCharges = 1;
-            NewAbilitySource = Source.Ability.ToString();
-            NewAbilityFrequency = Frequency.PerEvent.ToString();
+            OnPropertyChanged(nameof(NewAbility));
         }
+
+        public List<string> NewAbilityFrequencyOptions { get; } = Enum.GetNames(typeof(Frequency)).ToList();
 
         private void OnDeleteAbility(ChargedAbility ability)
         {
             _abilities.Remove(ability);
             Abilites.Remove(ability);
         }
+        
+        public List<string> NewAbilitySourceOptions { get; } = Enum.GetNames(typeof(Source)).ToList();
 
+        public void OnAppearing()
+        {
+            _abilities = _characterInterface.GetCharacter().ChargedAbilities;
+
+            Abilites.Clear();
+
+            foreach (var item in _abilities)
+            {
+                Abilites.Add(item);
+            }
+        }
     }
 }

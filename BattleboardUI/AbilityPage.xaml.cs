@@ -10,4 +10,10 @@ public partial class AbilityPage : ContentPage
 		InitializeComponent();
 		BindingContext = ServiceHelper.GetService<AbilityViewModel>();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as AbilityViewModel).OnAppearing();
+    }
 }

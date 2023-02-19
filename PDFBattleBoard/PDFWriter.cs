@@ -7,8 +7,27 @@ using System.Diagnostics;
 
 namespace PDFBattleBoard
 {
-    internal class PDFWriter
+    public class PDFWriter
     {
+
+        public static void CreatePdf(Character character, string filePath)
+        {
+            //Create PDF Document
+            PdfDocument document = new PdfDocument();
+            //You will have to add Page in PDF Document
+            PdfPage page = document.AddPage();
+
+            page.Orientation = PdfSharpCore.PageOrientation.Landscape;
+
+            //For drawing in PDF Page you will nedd XGraphics Object
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+
+            CharacterDrawer.DrawCharacter(character, gfx, new XRect() { Height = page.Height, Width = page.Width });
+
+            //Save PDF File
+            document.Save(filePath);
+
+        }
 
         static public void WritePdf(Character defaultCharacter)
         {

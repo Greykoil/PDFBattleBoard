@@ -9,8 +9,8 @@
       ColumnSpacing="5"
       RowDefinitions="Auto,*"
       RowSpacing="0">
-        <Entry  Grid.Column="0" Text="{Binding NewACName}"/>
-        <Entry  Grid.Column="1" Text="{Binding NewACValue}" Keyboard="Numeric"/>
+        <Entry  Grid.Column="0" Text="{Binding NewACValue.Name}"/>
+        <Entry  Grid.Column="1" Text="{Binding NewACValue.Value}" Keyboard="Numeric"/>
         <Button Text="Add New Value" Command="{Binding AddNewArmourValue}" Grid.Column="2"/>
 
         <CollectionView BackgroundColor="HotPink" Grid.Row="2" Grid.ColumnSpan="3" ItemsSource="{Binding ArmourValues}">

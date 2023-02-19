@@ -10,4 +10,10 @@ public partial class PoolAbilityPage : ContentPage
 		InitializeComponent();
         BindingContext = ServiceHelper.GetService<PoolAbilityViewModel>();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as PoolAbilityViewModel).OnAppearing();
+    }
 }

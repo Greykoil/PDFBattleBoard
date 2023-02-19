@@ -2,15 +2,9 @@
 using BattleBoardModel.Model;
 using CommunityToolkit.Maui.Storage;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Input;
-
+using PDFBattleBoard;
 
 namespace BattleBoardViewModel
 {
@@ -20,12 +14,14 @@ namespace BattleBoardViewModel
 
         public ICommand LoadCharacter { get; set; }
         public ICommand SaveCharacter { get; set; }
+        public ICommand CreatePDF { get; set; }
 
         public LoadAndSaveViewModel(ICharacterInterface character)
         {
             _character = character;
             LoadCharacter = new Command(OnLoadCharacter);
             SaveCharacter = new Command(OnSaveCharacter);
+            CreatePDF = new Command(OnCreatePDF);
         }
 
         private async void OnLoadCharacter()
@@ -42,19 +38,22 @@ namespace BattleBoardViewModel
                 })
             };
 
-            var foobaa = FilePicker.Default.PickAsync(options);
+            var pickerTask = FilePicker.Default.PickAsync(options);
             
-            var thing2 = await foobaa;
+            FileResult pickerResult = await pickerTask;
 
-            var thing =  thing2.OpenReadAsync().Result;
-            StreamReader reader = new StreamReader(thing);
+            if (pickerResult == null)
+            {
+                return;
+            }
+
+            var fileStream = pickerResult.OpenReadAsync().Result;
+            StreamReader reader = new StreamReader(fileStream);
             string text = reader.ReadToEnd();
 
             Character newChar = JsonConvert.DeserializeObject<Character>(text);
 
-            var foo = _character.GetCharacter();
-            
-            foo = newChar;
+            _character.UpdateCharacter(newChar);
         }
 
         private async void OnSaveCharacter()
@@ -62,10 +61,20 @@ namespace BattleBoardViewModel
             CancellationToken token = new CancellationToken();
             var output = JsonConvert.SerializeObject(_character.GetCharacter(), Formatting.Indented);
 
-            var repo = new MemoryStream(Encoding.UTF8.GetBytes(output));
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(output));
 
             string defaultName = _character.GetCharacter().Details.Name;
-            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".json", repo, token);
+            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".json", memStream, token);
+        }
+
+        private async void OnCreatePDF()
+        {
+            CancellationToken token = new CancellationToken();
+            string defaultName = _character.GetCharacter().Details.Name;
+            var memStream = new MemoryStream(Encoding.UTF8.GetBytes(""));
+            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".pdf", memStream, token);
+
+            PDFWriter.CreatePdf(_character.GetCharacter(), fileLocation);
         }
     }
 }

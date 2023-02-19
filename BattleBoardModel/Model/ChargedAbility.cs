@@ -9,10 +9,10 @@
 
     public enum Frequency
     {
-        Sectional,
-        Daily,
-        PerEvent,
-        OnceEver
+        Sectional = 0,
+        Daily = 1,
+        PerEvent = 2,
+        OnceEver = 3
     }
 
     public class ChargedAbility
