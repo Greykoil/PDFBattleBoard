@@ -20,7 +20,6 @@ namespace BattleBoardViewModel
             {
                 Player.Name = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CharacterDetailsString));
             }
         }
 
@@ -31,7 +30,6 @@ namespace BattleBoardViewModel
             {
                 Player.PlayerClass = Enum.Parse<PcClass>(value);
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CharacterDetailsString));
             }
         }
 
@@ -49,7 +47,6 @@ namespace BattleBoardViewModel
             {
                 Player.CharacterRace = Enum.Parse<PcRace>(value);
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CharacterDetailsString));
             }
         }
 
@@ -68,7 +65,6 @@ namespace BattleBoardViewModel
             {
                 Player.Points = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CharacterDetailsString));
             }
         }
 
@@ -78,17 +74,6 @@ namespace BattleBoardViewModel
             set
             {
                 Player.ResChances = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(CharacterDetailsString));
-            }
-        }
-
-        public string CharacterDetailsString
-        {
-            get => $"Character {CharacterName} - Class {CharacterClass} " +
-                   $"- Race {CharacterRace} - Points {CharacterPoints} - Res {CharacterResChances}";
-            set
-            {
                 OnPropertyChanged();
             }
         }

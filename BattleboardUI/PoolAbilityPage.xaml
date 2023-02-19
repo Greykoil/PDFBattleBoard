@@ -5,42 +5,81 @@
              xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
              Title="PoolAbilityPage">
 
-    <Grid ColumnDefinitions="*,*,*,*,*,*,*,*"
-      ColumnSpacing="7"
-      RowDefinitions="Auto,*"
-      RowSpacing="0">
-        <Entry  Grid.Column="0" Text="{Binding NewPoolAbility.Name}"/>
-        <Entry  Grid.Column="1" Text="{Binding NewPoolAbility.Total}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="2" Text="{Binding NewPoolAbility.Out}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="3" Text="{Binding NewPoolAbility.Self}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="4" Text="{Binding NewPoolAbility.Talisman}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="5" Text="{Binding NewPoolAbility.MedCharges}" Keyboard="Numeric"/>
-        <Switch Grid.Column="6" IsToggled="{Binding NewPoolAbility.HasOut}"/>
-        <Button Grid.Column="7" Text="Add New Pool" Command="{Binding AddNewPoolAbility}" />
+    <Grid
+        RowDefinitions="Auto,Auto,*">
+        <Label Grid.Row="0"
+                Text="This page allows you to set any pool abilites (life, power, mana, ki, psi, adrenals etc)."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+        <Label Grid.Row="1"
+                Text="To create a new ability just fill in the boxes and click add."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="20"
+                HorizontalOptions="Center" />
 
-        <CollectionView BackgroundColor="LightYellow" Grid.Row="2" Grid.ColumnSpan="8" ItemsSource="{Binding PoolAbilities}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10">
-                        <Frame HeightRequest="50" Padding="0">
-                            <Grid Padding="0" ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray" />
-                                <Label Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding Self}" Grid.Column="3" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding Talisman}" Grid.Column="4" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding MedCharges}" Grid.Column="5" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding HasOut}" Grid.Column="6" BackgroundColor="LightGray"/>
-                                <Button Text="Delete" 
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*,*,*,*,*" ColumnSpacing="7" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="0" Margin="50">
+
+            <Label Grid.Column="0" Text="New Pool Name"/>
+            <Label Grid.Column="1" Text="New Pool Total Available" />
+            <Label Grid.Column="2" Text="New Pool Total Out" />
+            <Label Grid.Column="3" Text="New Pool Total in Talisman" />
+            <Label Grid.Column="4" Text="New Pool Total in Self" />
+            <Label Grid.Column="5" Text="New Pool Med Charges"/>
+            <Label Grid.Column="6" Text="New Pool has any Out"/>
+            <Label Grid.Column="7" Text="" />
+
+            <Entry  Grid.Row="1" Grid.Column="0" Text="{Binding NewPoolAbility.Name}"/>
+            <Entry  Grid.Row="1" Grid.Column="1" Text="{Binding NewPoolAbility.Total}" Keyboard="Numeric"/>
+            <Entry  Grid.Row="1" Grid.Column="2" Text="{Binding NewPoolAbility.Out}" Keyboard="Numeric"/>
+            <Entry  Grid.Row="1" Grid.Column="3" Text="{Binding NewPoolAbility.Self}" Keyboard="Numeric"/>
+            <Entry  Grid.Row="1" Grid.Column="4" Text="{Binding NewPoolAbility.Talisman}" Keyboard="Numeric"/>
+            <Entry  Grid.Row="1" Grid.Column="5" Text="{Binding NewPoolAbility.MedCharges}" Keyboard="Numeric"/>
+            <Switch Grid.Row="1" Grid.Column="6" IsToggled="{Binding NewPoolAbility.HasOut}"/>
+            <Button Grid.Row="1" Grid.Column="7" Text="Add New Pool" Command="{Binding AddNewPoolAbility}" />
+
+            <CollectionView Grid.Row="3" Grid.ColumnSpan="8" ItemsSource="{Binding PoolAbilities}" Margin="10,20,0,0">
+                <CollectionView.Header>
+                    <!--
+                    This grid has an extra column of fixed width because the header appears to 
+                    be wider than the main view, seems to be a maui issue
+                    https://github.com/dotnet/maui/issues/9194
+                    -->
+                    <Grid Padding="10,2,0,2" ColumnDefinitions="*,*,*,*,*,*,*,*,50">
+                        <Label Grid.Column="0" Text="Pool Name" />
+                        <Label Grid.Column="1" Text="Pool Total Available" />
+                        <Label Grid.Column="2" Text="Pool Total Out" />
+                        <Label Grid.Column="3" Text="Pool Total in Talisman" />
+                        <Label Grid.Column="4" Text="Pool Total in Self" />
+                        <Label Grid.Column="5" Text="Pool Med Charges" />
+                        <Label Grid.Column="6" Text="Pool has any Out" />
+                        <Label Grid.Column="7" Text="" />
+                        <Label />
+                    </Grid>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10,2,0,2">
+                            <Frame HeightRequest="50" Padding="1">
+                                <Grid Padding="0" ColumnDefinitions="*,*,*,*,*,*,*,*">
+                                    <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray"/>
+                                    <Label Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray" />
+                                    <Label Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
+                                    <Label Text="{Binding Self}" Grid.Column="3" BackgroundColor="LightGray"/>
+                                    <Label Text="{Binding Talisman}" Grid.Column="4" BackgroundColor="LightGray"/>
+                                    <Label Text="{Binding MedCharges}" Grid.Column="5" BackgroundColor="LightGray"/>
+                                    <Label Text="{Binding HasOut}" Grid.Column="6" BackgroundColor="LightGray"/>
+                                    <Button Text="Delete" 
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:PoolAbilityViewModel}}, Path=DeletePool}"
                                         CommandParameter="{Binding .}"
-                                        Grid.Column="8"/>
-                            </Grid>
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                        Grid.Column="7"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </Grid>
 
 </ContentPage>

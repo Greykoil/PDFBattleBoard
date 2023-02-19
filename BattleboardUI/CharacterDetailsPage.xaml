@@ -3,76 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BattleboardUI.CharacterPage"
              Title="CharacterPage">
-
-    <Grid RowDefinitions="*,Auto,Auto,Auto,Auto,Auto,*"
-          ColumnDefinitions="*,Auto,Auto,*">
-        <Label 
-            Grid.Row="1"
-            Grid.Column="1"
-            Text="Character Name"
-            VerticalOptions="Center"
-        />
-        <Entry
-            Grid.Row="1"
-            Grid.Column="2"
-            Text="{Binding CharacterName}"
-        />
-        <Label 
-            Grid.Row="2"
-            Grid.Column="1"
-            Text="Character Race"
-            VerticalOptions="Center"
-        />
-        <Picker
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+            <Label
+                Text="This page allows you to set the main character details, name race etc."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+            <Grid RowDefinitions="*,Auto,Auto,Auto,Auto,Auto,*" ColumnDefinitions="*,Auto,Auto,*">
+                <Label 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="Character Name"
+                    VerticalOptions="Center"/>
+                <Entry
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Text="{Binding CharacterName}"/>
+                <Label 
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Text="Character Race"
+                    VerticalOptions="Center"/>
+                <Picker
             Grid.Row="2"
             Grid.Column="2"
             ItemsSource="{Binding RaceOptions}"
             ItemDisplayBinding="{Binding .}"
             SelectedItem="{Binding CharacterRace}"
             />
-        <Label 
+                <Label 
             Grid.Row="3"
             Grid.Column="1"
             Text="Character Class"
             VerticalOptions="Center"
         />
-        <Picker
+                <Picker
             Grid.Row="3"
             Grid.Column="2"
             ItemsSource="{Binding ClassOptions}"
             ItemDisplayBinding="{Binding .}"
             SelectedItem="{Binding CharacterClass}"
             />
-        <Label 
+                <Label 
             Grid.Row="4"
             Grid.Column="1"
             Text="Character Points"
             VerticalOptions="Center"
         />
-        <Entry
+                <Entry
             Grid.Row="4"
             Grid.Column="2"
             Placeholder="Number"
             Keyboard="Numeric"
             Text="{Binding CharacterPoints}"
         />
-        <Label 
+                <Label 
             Grid.Row="5"
             Grid.Column="1"
             Text="Res Chances"
             VerticalOptions="Center"
         />
-        <Entry
+                <Entry
             Grid.Row="5"
             Grid.Column="2"
             Placeholder="Number"
             Keyboard="Numeric"
             Text="{Binding CharacterResChances}"
         />
-        <Label 
-            Grid.Row="6"
-            Text="{Binding CharacterDetailsString}"
-        />
-    </Grid>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
 
 </ContentPage>

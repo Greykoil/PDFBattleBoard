@@ -9,16 +9,15 @@
             Padding="30,0"
             VerticalOptions="Center">
 
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
+            <Label
+                Text="Welcome to the Battleboard Companion App. This app allows you to create a character PDF for the new Battleboard layout."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Hello I am going to be the how to page when things are done!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
+                Text="This app does not attempt to do any character building or points tracking, it only allows you to manually create a character"
+                FontSize="28"
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>
