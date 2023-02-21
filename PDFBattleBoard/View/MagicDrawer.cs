@@ -12,9 +12,26 @@ namespace PDFBattleBoard.View
             DrawingUtils = utils;
         }
 
-        public double CalculateMagicHeight()
+        public double CalculateMagicHeight(MagicDetails magicDetails)
         {
-            return 13 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
+            if (!magicDetails.SpellSlots.Any())
+            {
+                return 0;
+            }
+
+            var maxLevel = magicDetails.SpellSlots.Max(x => x.Level);
+
+            switch (maxLevel)
+            {
+                case 5:
+                    return 9 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
+                case 8:
+                    return 12 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
+                case 10:
+                    return 13 * DrawingUtils.DefaultLineHeight + 2 * DrawingUtils.RegionBuffer;
+                default:
+                    throw new Exception("Unexpected magic setup");
+            }
         }
 
         public void DrawMagic(MagicDetails characterDetails, XRect containingRectangle)
@@ -58,6 +75,10 @@ namespace PDFBattleBoard.View
 
             currentPoint = innerRegion.TopLeft;
             currentPoint.Offset(0, DrawingUtils.DefaultLineHeight);
+
+            int maxSpellLevel = characterDetails.SpellSlots.Max(x => x.Level);
+
+
 
             for (int i = 1; i <= 5; ++i)
             {
@@ -103,6 +124,11 @@ namespace PDFBattleBoard.View
 
             currentPoint = levelFiveLines.BottomLeft;
 
+            if (maxSpellLevel <= 5)
+            {
+                return;
+            }
+
             for (int i = 6; i <= 8; ++i)
             {
                 var currentLevelSlots = characterDetails.SpellSlots[(i - 1)];
@@ -131,6 +157,11 @@ namespace PDFBattleBoard.View
             };
 
             DrawingUtils.FilLRegionWithLines(secondRightLineRegion);
+
+            if (maxSpellLevel <= 8)
+            {
+                return;
+            }
 
             var nineSlots = characterDetails.SpellSlots[8];
             var tenSlots = characterDetails.SpellSlots[9];
