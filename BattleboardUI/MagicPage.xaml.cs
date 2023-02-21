@@ -10,4 +10,10 @@ public partial class MagicPage : ContentPage
 		InitializeComponent();
         BindingContext = ServiceHelper.GetService<MagicViewModel>();
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        (BindingContext as MagicViewModel).OnAppearing();
+    }
 }

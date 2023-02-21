@@ -4,29 +4,49 @@
              x:Class="BattleboardUI.MagicPage"
               xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
              Title="MagicPage">
-    <Grid ColumnDefinitions="*,*,*,*"
+    <Grid ColumnDefinitions="Auto,Auto, Auto, Auto, Auto, Auto, *"
       ColumnSpacing="5"
       RowDefinitions="Auto,Auto,*"
+          Padding="20, 0, 0, 0"
       RowSpacing="0">
-        <Entry  Grid.Column="0" Text="{Binding NewMagicLevel.Level}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="1" Text="{Binding NewMagicLevel.Total}" Keyboard="Numeric"/>
-        <Entry  Grid.Column="2" Text="{Binding NewMagicLevel.Out}" Keyboard="Numeric"/>
-        <Button Text="Add New Value" Command="{Binding AddNewMagicSlot}" Grid.Column="4"/>
-        <Entry Grid.Row="1" Grid.Column="0" Text="{Binding MagicDetails.Mnemonics}"/>
-        <Entry Grid.Row="1" Grid.Column="2" Text="{Binding MagicDetails.Regain}"/>
-        <CollectionView BackgroundColor="HotPink" Grid.Row="3" Grid.ColumnSpan="4" ItemsSource="{Binding MagicSlots}">
+
+        <Label Grid.Row="0" Grid.Column="0" Text="Mnemonic Charges" VerticalOptions="Center"/>
+        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding MnemonicCharges}" Keyboard="Numeric"/>
+
+        <Label Grid.Row="0" Grid.Column="2" Text="Mnemonic Regains" VerticalOptions="Center"/>
+        <Entry Grid.Row="0" Grid.Column="3" Text="{Binding MnemonicRegain}" Keyboard="Numeric"/>
+
+        <Label Grid.Row="1" Grid.Column="0" Text="Has Battle Magic" VerticalOptions="Center"/>
+        <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding HasBattleMagic}"/>
+
+        <Label Grid.Row="1" Grid.Column="2" Text="Has Wizadry Magic"  VerticalOptions="Center"/>
+        <Switch Grid.Row="1" Grid.Column="3" IsToggled="{Binding HasWizardyMagic}"/>
+
+        <Label Grid.Row="1" Grid.Column="4" Text="Has Sorcery Magic" VerticalOptions="Center"/>
+        <Switch Grid.Row="1" Grid.Column="5" IsToggled="{Binding HasSorceryMagic}"/>
+
+        <CollectionView Grid.Row="3" Grid.ColumnSpan="7" ItemsSource="{Binding MagicSlots}" Margin="10,20,0,0">
+            <CollectionView.Header>
+                <!--
+                    This grid has an extra column of fixed width because the header appears to 
+                    be wider than the main view, seems to be a maui issue
+                    https://github.com/dotnet/maui/issues/9194
+                    -->
+                <Grid Padding="10,2,0,2" ColumnDefinitions="*,*,*">
+                    <Label Grid.Column="0" Text="Level" />
+                    <Label Grid.Column="1" Text="Total" />
+                    <Label Grid.Column="2" Text="Out" />
+                    <Label />
+                </Grid>
+            </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="10">
-                        <Frame HeightRequest="50" Padding="0">
-                            <Grid Padding="0" ColumnDefinitions="*,*,*,*">
+                    <Grid Padding="10,2,0,2">
+                        <Frame HeightRequest="50" Padding="1">
+                            <Grid Padding="0" ColumnDefinitions="*,*,*">
                                 <Label Text="{Binding Level}" Grid.Column="0" BackgroundColor="LightGray"/>
-                                <Label Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray"/>
+                                <Entry Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray" Keyboard="Numeric" />
                                 <Label Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
-                                <Button Text="Delete" 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:MagicViewModel}}, Path=DeleteMagicSlot}"
-                                        CommandParameter="{Binding .}"
-                                        Grid.Column="3"/>
                             </Grid>
                         </Frame>
                     </Grid>
