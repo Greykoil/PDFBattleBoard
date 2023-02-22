@@ -4,54 +4,67 @@
              x:Class="BattleboardUI.MagicPage"
               xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
              Title="MagicPage">
-    <Grid ColumnDefinitions="Auto,Auto, Auto, Auto, Auto, Auto, *"
+    <Grid
+        RowDefinitions="Auto,Auto,*">
+        <Label Grid.Row="0"
+                Text="This page allows you to set any magic your character has access to."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+        <Label Grid.Row="1"
+                Text="Toggle battle/wizadry/sorcery and then set the number of slots available/out."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="20"
+                HorizontalOptions="Center" />
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto, Auto, Auto, Auto, Auto, *"
       ColumnSpacing="5"
       RowDefinitions="Auto,Auto,*"
           Padding="20, 0, 0, 0"
       RowSpacing="0">
 
-        <Label Grid.Row="0" Grid.Column="0" Text="Mnemonic Charges" VerticalOptions="Center"/>
-        <Entry Grid.Row="0" Grid.Column="1" Text="{Binding MnemonicCharges}" Keyboard="Numeric"/>
+            <Label Grid.Row="0" Grid.Column="0" Text="Mnemonic Charges" VerticalOptions="Center"/>
+            <Entry Grid.Row="0" Grid.Column="1" Text="{Binding MnemonicCharges}" Keyboard="Numeric"/>
 
-        <Label Grid.Row="0" Grid.Column="2" Text="Mnemonic Regains" VerticalOptions="Center"/>
-        <Entry Grid.Row="0" Grid.Column="3" Text="{Binding MnemonicRegain}" Keyboard="Numeric"/>
+            <Label Grid.Row="0" Grid.Column="2" Text="Mnemonic Regains" VerticalOptions="Center"/>
+            <Entry Grid.Row="0" Grid.Column="3" Text="{Binding MnemonicRegain}" Keyboard="Numeric"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Text="Has Battle Magic" VerticalOptions="Center"/>
-        <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding HasBattleMagic}"/>
+            <Label Grid.Row="1" Grid.Column="0" Text="Has Battle Magic" VerticalOptions="Center"/>
+            <Switch Grid.Row="1" Grid.Column="1" IsToggled="{Binding HasBattleMagic}"/>
 
-        <Label Grid.Row="1" Grid.Column="2" Text="Has Wizadry Magic"  VerticalOptions="Center"/>
-        <Switch Grid.Row="1" Grid.Column="3" IsToggled="{Binding HasWizardyMagic}"/>
+            <Label Grid.Row="1" Grid.Column="2" Text="Has Wizadry Magic"  VerticalOptions="Center"/>
+            <Switch Grid.Row="1" Grid.Column="3" IsToggled="{Binding HasWizardyMagic}"/>
 
-        <Label Grid.Row="1" Grid.Column="4" Text="Has Sorcery Magic" VerticalOptions="Center"/>
-        <Switch Grid.Row="1" Grid.Column="5" IsToggled="{Binding HasSorceryMagic}"/>
+            <Label Grid.Row="1" Grid.Column="4" Text="Has Sorcery Magic" VerticalOptions="Center"/>
+            <Switch Grid.Row="1" Grid.Column="5" IsToggled="{Binding HasSorceryMagic}"/>
 
-        <CollectionView Grid.Row="3" Grid.ColumnSpan="7" ItemsSource="{Binding MagicSlots}" Margin="10,20,0,0">
-            <CollectionView.Header>
-                <!--
+            <CollectionView Grid.Row="3" Grid.ColumnSpan="7" ItemsSource="{Binding MagicSlots}" Margin="10,20,0,0">
+                <CollectionView.Header>
+                    <!--
                     This grid has an extra column of fixed width because the header appears to 
                     be wider than the main view, seems to be a maui issue
                     https://github.com/dotnet/maui/issues/9194
                     -->
-                <Grid Padding="10,2,0,2" ColumnDefinitions="*,*,*">
-                    <Label Grid.Column="0" Text="Level" />
-                    <Label Grid.Column="1" Text="Total" />
-                    <Label Grid.Column="2" Text="Out" />
-                    <Label />
-                </Grid>
-            </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Padding="10,2,0,2">
-                        <Frame HeightRequest="50" Padding="1">
-                            <Grid Padding="0" ColumnDefinitions="*,*,*">
-                                <Label Text="{Binding Level}" Grid.Column="0" BackgroundColor="LightGray"/>
-                                <Entry Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray" Keyboard="Numeric" />
-                                <Label Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
-                            </Grid>
-                        </Frame>
+                    <Grid Padding="10,2,0,2" ColumnDefinitions="*,*,*">
+                        <Label Grid.Column="0" Text="Level" />
+                        <Label Grid.Column="1" Text="Total" />
+                        <Label Grid.Column="2" Text="Out" />
+                        <Label />
                     </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10,2,0,2">
+                            <Frame HeightRequest="50" Padding="1">
+                                <Grid Padding="0" ColumnDefinitions="*,*,*">
+                                    <Label Text="{Binding Level}" Grid.Column="0" BackgroundColor="LightGray"/>
+                                    <Entry Text="{Binding Total}" Grid.Column="1" BackgroundColor="LightGray" Keyboard="Numeric" />
+                                    <Entry Text="{Binding Out}" Grid.Column="2" BackgroundColor="LightGray"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
     </Grid>
 </ContentPage>

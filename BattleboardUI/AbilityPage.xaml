@@ -27,7 +27,7 @@
             <Label Grid.Row="0" Grid.Column="2" Text="New Ability Frequency" />
             <Label Grid.Row="0" Grid.Column="3" Text="New Ability Source" />
             <Label Grid.Row="0" Grid.Column="2" Text="" />
-            
+
             <Entry Grid.Row="1"  Grid.Column="0" Text="{Binding NewAbility.Name}"/>
             <Entry Grid.Row="1" Grid.Column="1" Text="{Binding NewAbility.Charges}" Keyboard="Numeric"/>
             <Picker Grid.Row="1" Grid.Column="2" ItemsSource="{Binding NewAbilityFrequencyOptions}" 
@@ -49,9 +49,11 @@
                             <Frame HeightRequest="50" Padding="1">
                                 <Grid ColumnDefinitions="*,*,*,*,*">
                                     <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray"/>
-                                    <Label Text="{Binding Charges}" Grid.Column="1" BackgroundColor="LightGray" />
-                                    <Label Text="{Binding Frequent}" Grid.Column="2" BackgroundColor="LightGray"/>
-                                    <Label Text="{Binding Source}" Grid.Column="3" BackgroundColor="LightGray"/>
+                                    <Entry Text="{Binding Charges}" Grid.Column="1" BackgroundColor="LightGray" />
+                                    <Picker Grid.Column="2" ItemsSource="{Binding NewAbilityFrequencyOptions}"
+                                            SelectedIndex="{Binding Frequent, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Frequency}}"/>
+                                    <Picker Grid.Column="3" ItemsSource="{Binding NewAbilitySourceOptions}"
+                                            SelectedIndex="{Binding Source, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Source}}"/>
                                     <Button Text="Delete" 
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:AbilityViewModel}}, Path=DeleteAbility}"
                                         CommandParameter="{Binding .}"

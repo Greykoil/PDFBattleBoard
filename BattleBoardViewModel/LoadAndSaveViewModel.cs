@@ -51,9 +51,15 @@ namespace BattleBoardViewModel
             StreamReader reader = new StreamReader(fileStream);
             string text = reader.ReadToEnd();
 
-            Character newChar = JsonConvert.DeserializeObject<Character>(text);
-
-            _character.UpdateCharacter(newChar);
+            try
+            {
+                Character newChar = JsonConvert.DeserializeObject<Character>(text);
+                _character.UpdateCharacter(newChar);
+            }
+            catch (Newtonsoft.Json.JsonReaderException ex)
+            {
+                return;
+            }
         }
 
         private async void OnSaveCharacter()
@@ -64,7 +70,15 @@ namespace BattleBoardViewModel
             var memStream = new MemoryStream(Encoding.UTF8.GetBytes(output));
 
             string defaultName = _character.GetCharacter().Details.Name;
-            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".json", memStream, token);
+            try
+            {
+                var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".json", memStream, token);
+            }
+            catch (FileSaveException e)
+            {
+                // We get this exception thrown if the user cancels out of the save dialog.
+                return;
+            }
         }
 
         private async void OnCreatePDF()
@@ -72,9 +86,17 @@ namespace BattleBoardViewModel
             CancellationToken token = new CancellationToken();
             string defaultName = _character.GetCharacter().Details.Name;
             var memStream = new MemoryStream(Encoding.UTF8.GetBytes(""));
-            var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".pdf", memStream, token);
 
-            PDFWriter.CreatePdf(_character.GetCharacter(), fileLocation);
+            try
+            {
+                var fileLocation = await FileSaver.Default.SaveAsync(defaultName + ".pdf", memStream, token);
+                PDFWriter.CreatePdf(_character.GetCharacter(), fileLocation);
+            }
+            catch (FileSaveException e)
+            {
+                // We get this exception thrown if the user cancels out of the save dialog.
+                return;
+            }
         }
     }
 }
