@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BattleboardUI.ArmourPage"
+             xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
+             Title="ArmourPage">
+    <Grid
+        RowDefinitions="Auto,Auto,*">
+        <Label Grid.Row="0"
+                Text="This page allows you to set your armour class values."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+        <Label Grid.Row="1"
+                Text="To create a new value then fill out the boxes at the top of the list and click the button."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="20"
+                HorizontalOptions="Center" />
+        <Grid Grid.Row="2"
+            ColumnDefinitions="*,*,*"
+            ColumnSpacing="10"
+            RowDefinitions="Auto,Auto,Auto,*"
+            RowSpacing="0"
+            Margin="50">
+
+            <Label Grid.Row="0" Grid.Column="0" Text="New AC Type" HorizontalOptions="Center"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="New AC Value" HorizontalOptions="Center"/>
+            <Label Grid.Row="0" Grid.Column="2" Text="" />
+
+            <Entry  Grid.Row="1" Grid.Column="0" Text="{Binding NewACValue.Name}"/>
+            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding NewACValue.Value}" Keyboard="Numeric"/>
+            <Button Grid.Row="1" Grid.Column="2" Text="Add New Armour Class" Command="{Binding AddNewArmourValue}" />
+
+            <Label Grid.Row="2" Grid.Column="0" Text="AC Type" Padding="10,20,0,0"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="AC Value" Padding="0,20,0,0"/>
+            <Label Grid.Row="2" Grid.Column="2" Text="" />
+            
+            <CollectionView Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding ArmourValues}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10, 2, 0, 2">
+                            <Frame HeightRequest="50" Padding="1">
+                                <Grid ColumnDefinitions="*,*,*" >
+                                    <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray" Padding="5"/>
+                                    <Entry Text= "{Binding Value}" Grid.Column="1" BackgroundColor="LightGray" />
+                                    <Button Text="Delete" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:ArmourViewModel}}, Path=DeleteACValue}"
+                                        CommandParameter="{Binding .}"
+                                        Grid.Column="2"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentPage>

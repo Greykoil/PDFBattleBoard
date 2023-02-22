@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="BattleboardUI.AbilityPage"
+             xmlns:otherThing="clr-namespace:BattleBoardViewModel;assembly=BattleBoardViewModel"
+             xmlns:model="clr-namespace:BattleBoardModel.Model;assembly=BattleBoardModel"
+             Title="AbilityPage">
+
+    <Grid
+        RowDefinitions="Auto,Auto,*">
+        <Label Grid.Row="0"
+                Text="This page allows you to set your charged abilites/items/stores."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="32"
+                HorizontalOptions="Center" />
+        <Label Grid.Row="1"
+                Text="To create a new ability just fill in the boxes and click add."
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="20"
+                HorizontalOptions="Center" />
+
+        <Grid Grid.Row="2" ColumnDefinitions="*,*,*,*,*" ColumnSpacing="5" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="0" Margin="50">
+
+            <Label Grid.Row="0" Grid.Column="0" Text="New Ability Name" HorizontalOptions="Center"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="New Ability Charges" HorizontalOptions="Center"/>
+            <Label Grid.Row="0" Grid.Column="2" Text="New Ability Frequency" />
+            <Label Grid.Row="0" Grid.Column="3" Text="New Ability Source" />
+            <Label Grid.Row="0" Grid.Column="2" Text="" />
+
+            <Entry Grid.Row="1"  Grid.Column="0" Text="{Binding NewAbility.Name}"/>
+            <Entry Grid.Row="1" Grid.Column="1" Text="{Binding NewAbility.Charges}" Keyboard="Numeric"/>
+            <Picker Grid.Row="1" Grid.Column="2" ItemsSource="{Binding NewAbilityFrequencyOptions}" 
+                SelectedIndex="{Binding NewAbility.Frequent, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Frequency}}" />
+            <Picker Grid.Row="1" Grid.Column="3" ItemsSource="{Binding NewAbilitySourceOptions}" 
+                SelectedIndex="{Binding NewAbility.Source, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Source}}" />
+
+            <Button Grid.Row="1" Text="Add New Ability" Command="{Binding AddNewAbility}" Grid.Column="4"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Text="Ability Name" Padding="10,20,0,0"/>
+            <Label Grid.Row="2" Grid.Column="1" Text="Ability Charges" Padding="0,20,0,0"/>
+            <Label Grid.Row="2" Grid.Column="2" Text="Ability Frequency" Padding="0,20,0,0"/>
+            <Label Grid.Row="2" Grid.Column="3" Text="Ability Source" Padding="0,20,0,0"/>
+
+            <CollectionView Grid.Row="3" Grid.ColumnSpan="5" ItemsSource="{Binding Abilites}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="10, 2, 0, 2">
+                            <Frame HeightRequest="50" Padding="1">
+                                <Grid ColumnDefinitions="*,*,*,*,*">
+                                    <Label Text="{Binding Name}" Grid.Column="0" BackgroundColor="LightGray"/>
+                                    <Entry Text="{Binding Charges}" Grid.Column="1" BackgroundColor="LightGray" />
+                                    <Picker Grid.Column="2" ItemsSource="{Binding NewAbilityFrequencyOptions}"
+                                            SelectedIndex="{Binding Frequent, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Frequency}}"/>
+                                    <Picker Grid.Column="3" ItemsSource="{Binding NewAbilitySourceOptions}"
+                                            SelectedIndex="{Binding Source, Converter={mct:EnumToIntConverter}, ConverterParameter={x:Type model:Source}}"/>
+                                    <Button Text="Delete" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type otherThing:AbilityViewModel}}, Path=DeleteAbility}"
+                                        CommandParameter="{Binding .}"
+                                        Grid.Column="4"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentPage>

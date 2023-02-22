@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="BattleboardUI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:BattleboardUI"
+    Shell.FlyoutBehavior="Disabled">
+
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+
+        <ShellContent
+            Title="Character Page"
+            ContentTemplate="{DataTemplate local:CharacterPage}"
+            Route="CharacterPage" />
+        
+        <ShellContent
+            Title="Armour Page"
+            ContentTemplate="{DataTemplate local:ArmourPage}"
+            Route="ArmourPage" />
+
+        <ShellContent
+            Title="Abilites Page"
+            ContentTemplate="{DataTemplate local:AbilityPage}"
+            Route="AbilitesPage" />
+
+        <ShellContent
+            Title="Pool Abilities Page"
+            ContentTemplate="{DataTemplate local:PoolAbilityPage}"
+            Route="PoolAbilitesPage" />
+
+        <ShellContent
+            Title="Magic Page"
+            ContentTemplate="{DataTemplate local:MagicPage}"
+            Route="MagicPage" />
+
+        <ShellContent
+            Title="Load and Save Page"
+            ContentTemplate="{DataTemplate local:LoadAndSavePage}"
+            Route="LoasAndSavePage" />
+    </TabBar>
+
+</Shell>

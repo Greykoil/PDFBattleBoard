@@ -1,8 +1,8 @@
-﻿using PDFBattleBoard.Model;
+﻿using BattleBoardModel.Model;
 
-namespace PDFBattleBoard.Utils
+namespace BattleBoardModel.Utils
 {
-    internal class CharacterBuilder
+    public class CharacterBuilder
     {
 
         public static IEnumerable<Character> BuildAllCharacters()
@@ -29,7 +29,7 @@ namespace PDFBattleBoard.Utils
 
         public static Character BuildCharacter()
         {
-            return Igor();
+            return DemoCharacter();
         }
 
         public static Character DemoCharacter()

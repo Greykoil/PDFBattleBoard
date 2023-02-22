@@ -1,4 +1,4 @@
-﻿using PDFBattleBoard.Model;
+﻿using BattleBoardModel.Model;
 using PdfSharpCore.Drawing;
 
 namespace PDFBattleBoard.View
@@ -47,7 +47,7 @@ namespace PDFBattleBoard.View
             {
                 var UtilDrawer = new UtilDrawer(graphics);
                 var magic = new MagicDrawer(UtilDrawer);
-                magicAbilityHeight = magic.CalculateMagicHeight();
+                magicAbilityHeight = magic.CalculateMagicHeight(character.CharacterMagic);
             }
 
             double lifeHeight = leftSideSpace - magicAbilityHeight - armourHeight;
@@ -71,7 +71,7 @@ namespace PDFBattleBoard.View
                 }
             };
 
-            if (character.CharacterMagic != null)
+            if (character.CharacterMagic.SpellSlots.Any())
             {
                 DrawMagicAbilities(character.CharacterMagic, magicRect, graphics);
             }

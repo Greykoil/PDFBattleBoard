@@ -1,7 +1,6 @@
-﻿namespace PDFBattleBoard.Model
+﻿namespace BattleBoardModel.Model
 {
-
-    enum PcClass
+    public enum PcClass
     {
         Warrior,
         Wizard,
@@ -9,14 +8,14 @@
         Priest
     }
 
-    enum PcRace
+    public enum PcRace
     {
         Human,
         HalfOrc,
         Elf
     }
 
-    internal class CharacterDetails
+    public class CharacterDetails
     {
         public string Name { get; set; }
         public PcClass PlayerClass { get; set; }

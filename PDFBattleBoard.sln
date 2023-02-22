@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PDFBattleBoard", "PDFBattleBoard\PDFBattleBoard.csproj", "{573D5AFD-B8E7-41E0-83FF-8C5C1523D770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PDFBattleBoard", "PDFBattleBoard\PDFBattleBoard.csproj", "{573D5AFD-B8E7-41E0-83FF-8C5C1523D770}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleboardUI", "BattleboardUI\BattleboardUI.csproj", "{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleBoardModel", "BattleBoardModel\BattleBoardModel.csproj", "{88819F54-D1E9-49EC-8A2A-766E00D97C8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleBoardViewModel", "BattleBoardViewModel\BattleBoardViewModel.csproj", "{6898C47D-C55A-4C6D-B3B1-1DF4E698D9C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,20 @@ Global
 		{573D5AFD-B8E7-41E0-83FF-8C5C1523D770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{573D5AFD-B8E7-41E0-83FF-8C5C1523D770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{573D5AFD-B8E7-41E0-83FF-8C5C1523D770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7ACBFDE-B9B6-4C4E-ADA1-CBF94668C807}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{88819F54-D1E9-49EC-8A2A-766E00D97C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88819F54-D1E9-49EC-8A2A-766E00D97C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88819F54-D1E9-49EC-8A2A-766E00D97C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88819F54-D1E9-49EC-8A2A-766E00D97C8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6898C47D-C55A-4C6D-B3B1-1DF4E698D9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6898C47D-C55A-4C6D-B3B1-1DF4E698D9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6898C47D-C55A-4C6D-B3B1-1DF4E698D9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6898C47D-C55A-4C6D-B3B1-1DF4E698D9C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
